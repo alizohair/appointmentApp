@@ -17,7 +17,7 @@ import dataBase.DatabaseHandler;
 
 
 public class ScheduleListScreen extends AppCompatActivity {
-
+// tasdlkasldj
     private RecyclerView scheduleList;
     DatabaseHandler databaseHandler;
     @Override
