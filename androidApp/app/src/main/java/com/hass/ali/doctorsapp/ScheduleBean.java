@@ -1,5 +1,7 @@
 package com.hass.ali.doctorsapp;
 
+import java.util.ArrayList;
+
 /**
  * Created by Ali.Zohair on 8/23/2017.
  */
@@ -7,7 +9,20 @@ package com.hass.ali.doctorsapp;
 public class ScheduleBean {
 
     String scheduleName;
+    String scheduleID;
+    String scheduleTimeTo;
+    String scheduleTimeFrom;
 
+    public ArrayList<String> getDays() {
+        return days;
+    }
+
+    public void setDays(ArrayList<String> days) {
+        this.days = days;
+    }
+
+    ArrayList<String> days;
+    String capacity;
     public String getScheduleName() {
         return scheduleName;
     }
@@ -16,12 +31,7 @@ public class ScheduleBean {
         this.scheduleName = scheduleName;
     }
 
-    String scheduleID;
-    String scheduleTimeTo;
-    String scheduleTimeFrom;
-    String ScheduleTimeTo;
-    String[] days;
-    int capacity;
+
 
 
     public String getScheduleID() {
@@ -40,19 +50,13 @@ public class ScheduleBean {
         this.scheduleTimeTo = scheduleTimeTo;
     }
 
-    public String[] getDays() {
-        return days;
-    }
 
-    public void setDays(String[] days) {
-        this.days = days;
-    }
 
-    public int getCapacity() {
+    public String getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(String capacity) {
         this.capacity = capacity;
     }
 

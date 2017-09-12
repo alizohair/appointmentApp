@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import adapters.CalendarCustomView;
 import dataBase.DatabaseHandler;
 
 public class HomeScreen extends AppCompatActivity
@@ -45,7 +46,7 @@ public class HomeScreen extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        CalendarCustomView mView = (CalendarCustomView)findViewById(R.id.custom_calendar);
 
 
     }

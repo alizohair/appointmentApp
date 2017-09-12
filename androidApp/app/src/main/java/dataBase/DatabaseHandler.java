@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    private SQLiteDatabase      database;
+    private SQLiteDatabase  database;
 
     @Override
     public void onCreate(SQLiteDatabase db) {
