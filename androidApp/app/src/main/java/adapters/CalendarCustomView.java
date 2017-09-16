@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hass.ali.doctorsapp.HomeScreen;
 import com.hass.ali.doctorsapp.R;
 
 import java.text.SimpleDateFormat;
@@ -38,6 +39,7 @@ public class CalendarCustomView extends LinearLayout {
     private Calendar cal = Calendar.getInstance(Locale.ENGLISH);
     private Context context;
     private GridAdapter mAdapter;
+    private OnLoadingButtonClickListener<Date> mONOnLoadingButtonClickListener;
   //  private DatabaseQuery mQuery;
     public CalendarCustomView(Context context) {
         super(context);
@@ -83,12 +85,19 @@ public class CalendarCustomView extends LinearLayout {
         });
     }
     private void setGridCellClickEvents(){
+
+
+
         calendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(context, "Clicked " + calendarGridView.getAdapter().getItem(position), Toast.LENGTH_LONG).show();
+                if(mONOnLoadingButtonClickListener != null){
+                    mONOnLoadingButtonClickListener.onLoadingButtonClickListener((Date) calendarGridView.getAdapter().getItem(position));
+                    //Toast.makeText(context, "Clicked " + calendarGridView.getAdapter().getItem(position), Toast.LENGTH_LONG).show();
+                }
             }
         });
+
     }
     private void setUpCalendarAdapter(){
         List<Date> dayValueInCells = new ArrayList<Date>();
@@ -109,7 +118,12 @@ public class CalendarCustomView extends LinearLayout {
         calendarGridView.setAdapter(mAdapter);
     }
 
+    public void mONOnLoadingButtonClickListener(OnLoadingButtonClickListener<Date> mONOnLoadingButtonClickListener) {
+        this.mONOnLoadingButtonClickListener = mONOnLoadingButtonClickListener;
+    }
 
-
+    public interface OnLoadingButtonClickListener<data>{
+        void onLoadingButtonClickListener(Date data);
+    }
 
 }

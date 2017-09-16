@@ -25,7 +25,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import dataBase.DatabaseHandler;
+import dataBase.DBConnection;
+
 
 public class ScheduleForm extends AppCompatActivity {
     TextView timeFrom;
@@ -36,7 +37,7 @@ Button saveBtn;
     TextView name;
     TextView capacityET;
    CheckBox CbMon,CbTue,CbWed,CbThu,CbFri,CbSat,CbSun;
-    DatabaseHandler databaseHandler;
+
     private int mYear, mMonth, mDay, mHour, mMinute;
 
   //  SQLiteDatabase db ;
@@ -69,7 +70,7 @@ Button saveBtn;
 
 
 
-      databaseHandler = new DatabaseHandler(this);
+
 
       //  SQLiteDatabase db = databaseHandler.getWritableDatabase();
 
@@ -279,10 +280,10 @@ Button saveBtn;
         scheduleCV.put("start_date", scheduleData.get("dateTo"));
         scheduleCV.put("end_date", scheduleData.get("dateFrom"));
         scheduleCV.put("capacity", scheduleData.get("capacity"));
-        SQLiteDatabase  db = databaseHandler.getWritableDatabase();
-
-        db.beginTransaction();
-        db.insert("schedule", null, scheduleCV);
+       // SQLiteDatabase  db = databaseHandler.getWritableDatabase();
+        DBConnection.setBeginTransaction(true);
+       // db.beginTransaction();
+        DBConnection.insertRow("schedule", scheduleCV);
 
 
         for(int a = 0; a < arrayList.size();a++){
@@ -290,36 +291,33 @@ Button saveBtn;
             ContentValues scheduleDaysCV = new ContentValues();
             scheduleDaysCV.put("schedule_id",scheduleID);
             scheduleDaysCV.put("day_id", String.valueOf(arrayList.get(a)));
-
-            db.insert("schedule_day", null, scheduleDaysCV);
+            DBConnection.insertRow("schedule_day", scheduleDaysCV);
+           // db.insert("schedule_day", null, scheduleDaysCV);
 
 }
+        DBConnection.committTransaction();
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
-
-db.close();
         Toast.makeText(this, "save successfully", Toast.LENGTH_SHORT).show();
 
 
     }
 
 
-      private int getNewScheduleId() throws SQLException{
+      private int getNewScheduleId() throws Exception{
 
-          SQLiteDatabase  db = databaseHandler.getWritableDatabase();
+        //  SQLiteDatabase  db = databaseHandler.getWritableDatabase();
           String count = "";
           String selectQuery = " select count (*) from schedule;";
        //   db = databaseHandler.getWritableDatabase();
 
-          Cursor cursor = db.rawQuery(selectQuery, null);
+          Cursor cursor = DBConnection.rawQuery(selectQuery, null);
 
           if (cursor.moveToFirst()) {
 
               count = cursor.getString(0);
 
           }
-              db.close();
+         //     db.close();
 
 return Integer.parseInt(count) + 1;
 

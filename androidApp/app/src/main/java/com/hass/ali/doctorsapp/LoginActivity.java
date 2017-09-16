@@ -29,9 +29,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dataBase.DBConnection;
+import dataBase.DataBaseClass;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -39,12 +43,12 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-
+    private static final String createAppointment= "CREATE TABLE appointment (appointment_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,schedule_id INTEGER,appointment_date TEXT,client_id INTEGER,status TEXT,token_no TEXT,token_datetime TEXT,token_reorder_time TEXT,availed_time TEXT);";
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
+    public static LoginActivity context;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -338,7 +342,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
 
                 startActivity(new Intent(LoginActivity.this,HomeScreen.class));
-               // finish();
+                DBConnection.createConnection();
+                try {
+                    DBConnection.executeQuery(createAppointment);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(LoginActivity.this, e+"", Toast.LENGTH_SHORT).show();
+                }
+                // finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

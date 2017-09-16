@@ -13,6 +13,25 @@ public class ScheduleBean {
     String scheduleTimeTo;
     String scheduleTimeFrom;
 
+    public String getScheduledateFrom() {
+        return scheduledateFrom;
+    }
+
+    public void setScheduledateFrom(String scheduledateFrom) {
+        this.scheduledateFrom = scheduledateFrom;
+    }
+
+    public String getScheduledateto() {
+        return scheduledateto;
+    }
+
+    public void setScheduledateto(String scheduledateto) {
+        this.scheduledateto = scheduledateto;
+    }
+
+    String scheduledateFrom;
+    String scheduledateto;
+
     public ArrayList<String> getDays() {
         return days;
     }

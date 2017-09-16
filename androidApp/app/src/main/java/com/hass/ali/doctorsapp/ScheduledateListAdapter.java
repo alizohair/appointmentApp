@@ -7,14 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapter.MyViewHolder>{
+public class ScheduledateListAdapter extends RecyclerView.Adapter<ScheduledateListAdapter.MyViewHolder>{
 
     private List<ScheduleBean> scheduleBeanList;
     private Context ctx;
-    public ScheduleListAdapter(List<ScheduleBean> activityBeanList, Context ctx) {
+    public ScheduledateListAdapter(List<ScheduleBean> activityBeanList, Context ctx) {
         this.scheduleBeanList = activityBeanList;
         this.ctx=ctx;
     }
@@ -33,13 +32,13 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
     }
 
     @Override
-    public ScheduleListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ScheduledateListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_list_layout, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ScheduleListAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(ScheduledateListAdapter.MyViewHolder holder, final int position) {
 
         ScheduleBean scheBean = scheduleBeanList.get(position);
 

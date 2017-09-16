@@ -16,7 +16,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     private static final String createSchedule= "CREATE TABLE schedule (schedule_id INTEGER PRIMARY KEY,schedule_name TEXT,start_time TEXT,end_time TEXT,start_date TEXT,end_date TEXT,capacity int);";
-    private static final String createScheduleDay= "CREATE TABLE schedule_day (day_id INTEGER PRIMARY KEY,schedule_id INTEGER,FOREIGN KEY(schedule_id) REFERENCES schedule(schedule_id));";
+    private static final String createScheduleDay= "CREATE TABLE schedule_day (schedule_id INTEGER, day_id INTEGER,FOREIGN KEY(schedule_id) REFERENCES schedule(schedule_id), PRIMARY KEY (schedule_id, day_id));";
+    private static final String createAppointment= "CREATE TABLE appointment (appointment_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,schedule_id INTEGER,appointment_date TEXT,client_id INTEGER,status TEXT,token_no TEXT,token_datetime TEXT,token_reorder_time TEXT,availed_time TEXT);";
 
 
 
@@ -46,6 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         database.execSQL(createSchedule);
         database.execSQL(createScheduleDay);
+        database.execSQL(createAppointment);
     }
 
 

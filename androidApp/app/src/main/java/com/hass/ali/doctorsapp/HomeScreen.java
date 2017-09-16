@@ -1,10 +1,14 @@
 package com.hass.ali.doctorsapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,12 +19,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 import adapters.CalendarCustomView;
-import dataBase.DatabaseHandler;
+import bussines.HomeHandler;
+
 
 public class HomeScreen extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, CalendarCustomView.OnLoadingButtonClickListener {
 
+    private RecyclerView scheduleList;
+     private ArrayList<ScheduleBean> scheduleBeen ;
+    ScheduledateListAdapter scheduledateListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +65,24 @@ public class HomeScreen extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         CalendarCustomView mView = (CalendarCustomView)findViewById(R.id.custom_calendar);
+        mView.mONOnLoadingButtonClickListener(this);
+        scheduleList = (RecyclerView)findViewById(R.id.scheduleList);
+
+
+
+        scheduleBeen = new ArrayList<>();
+         scheduledateListAdapter =  new ScheduledateListAdapter(scheduleBeen,HomeScreen.this);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        scheduleList.setLayoutManager(mLayoutManager);
+        scheduleList.setItemAnimator(new DefaultItemAnimator());
+        scheduleList.setAdapter(scheduledateListAdapter);
+
+        //refreshScheduleList();
 
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -113,5 +146,60 @@ if(id == R.id.nav_profile){
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onLoadingButtonClickListener(Date data) {
+        Toast.makeText(HomeScreen.this, data.toString(), Toast.LENGTH_LONG).show();
+        HomeHandler homeHandler = new HomeHandler();
+        try {
+            refreshScheduleList(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+    private void refreshScheduleList(Date date) throws Exception {
+       String[] dateArray = formatedTime(date).split(",");
+
+        String daYid = dayToIDmap(dateArray[0]).toString();
+        String Str_date = dateArray[1];
+        HomeHandler homeHandler = new HomeHandler();
+        scheduleBeen =  homeHandler.getDayscheduleList(Str_date,daYid);
+        scheduledateListAdapter =  new ScheduledateListAdapter(scheduleBeen,HomeScreen.this);
+        scheduleList.setAdapter(scheduledateListAdapter);
+
+    }
+
+    private String formatedTime(Date selecteedTime){
+
+
+
+        SimpleDateFormat    sdf = new SimpleDateFormat("EE,dd-MM-yyyy");
+        String formatedTime = sdf.format(selecteedTime);
+        return formatedTime;
+    }
+
+
+    private String dayToIDmap(String dayKey){
+
+        HashMap<String,String> stringStringHashMap = new HashMap<>();
+        stringStringHashMap.put("Mon","1");
+        stringStringHashMap.put("Tue","2");
+        stringStringHashMap.put("Wed","3");
+        stringStringHashMap.put("Thu","4");
+        stringStringHashMap.put("Fri","5");
+        stringStringHashMap.put("Sat","6");
+        stringStringHashMap.put("Sun","7");
+
+
+
+
+
+
+        return stringStringHashMap.get(dayKey);
     }
 }
