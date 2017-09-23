@@ -25,9 +25,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import adapters.CalendarCustomView;
 import bussines.HomeHandler;
@@ -35,7 +37,7 @@ import bussines.HomeHandler;
 
 public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, CalendarCustomView.OnLoadingButtonClickListener {
-
+    private Calendar currentDate= Calendar.getInstance(Locale.ENGLISH);;
     private RecyclerView scheduleList;
      private ArrayList<ScheduleBean> scheduleBeen ;
     ScheduledateListAdapter scheduledateListAdapter;
@@ -77,7 +79,11 @@ public class HomeScreen extends AppCompatActivity
         scheduleList.setLayoutManager(mLayoutManager);
         scheduleList.setItemAnimator(new DefaultItemAnimator());
         scheduleList.setAdapter(scheduledateListAdapter);
-
+        try {
+            refreshScheduleList(currentDate.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //refreshScheduleList();
 
 

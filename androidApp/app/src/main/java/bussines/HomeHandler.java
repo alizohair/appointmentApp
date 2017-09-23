@@ -76,7 +76,7 @@ public class HomeHandler {
                 ") a on s.schedule_id = a.schedule_id " +
                // "WHERE '"+Str_date+"' between s.end_date and s.start_date " +
                 " WHERE sd.day_id = '"+day+"';";
-String[] strings = {Str_date,Str_date,day};
+        String[] strings = {Str_date,Str_date,day};
         Cursor cursor =  DBConnection.rawQuery(selectQuery, null);
         // Cursor cursor = db.rawQuery(selectQuery, null);
         ArrayList<ScheduleBean> scheduleBeanList = new ArrayList<>();

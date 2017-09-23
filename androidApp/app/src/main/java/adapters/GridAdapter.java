@@ -55,7 +55,7 @@ public class GridAdapter extends ArrayAdapter {
             dateView.setEnabled(false);
             //view.setBackgroundColor(Color.parseColor("#cccccc"));
         }
-        if(dayValue == 15){
+        if(dayValue == currentDate.get(Calendar.DATE)){
             view.setBackgroundColor(Color.parseColor("#BDBDBD"));
         }
         //Add day to calendar
