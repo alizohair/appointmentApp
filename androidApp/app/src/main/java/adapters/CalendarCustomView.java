@@ -38,7 +38,7 @@ public class CalendarCustomView extends LinearLayout {
     private SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     private Calendar cal = Calendar.getInstance(Locale.ENGLISH);
     private Context context;
-    private GridAdapter mAdapter;
+    public GridAdapter mAdapter;
     private OnLoadingButtonClickListener<Date> mONOnLoadingButtonClickListener;
   //  private DatabaseQuery mQuery;
     public CalendarCustomView(Context context) {
@@ -114,7 +114,7 @@ public class CalendarCustomView extends LinearLayout {
         Log.d(TAG, "Number of date " + dayValueInCells.size());
         String sDate = formatter.format(cal.getTime());
         currentDate.setText(sDate);
-        mAdapter = new GridAdapter(context, dayValueInCells, cal);
+        mAdapter = new GridAdapter(context, dayValueInCells, cal,cal.get(Calendar.DATE));
         calendarGridView.setAdapter(mAdapter);
     }
 

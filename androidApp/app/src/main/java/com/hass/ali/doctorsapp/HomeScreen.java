@@ -40,6 +40,7 @@ public class HomeScreen extends AppCompatActivity
     private Calendar currentDate= Calendar.getInstance(Locale.ENGLISH);;
     private RecyclerView scheduleList;
      private ArrayList<ScheduleBean> scheduleBeen ;
+    CalendarCustomView mView;
     ScheduledateListAdapter scheduledateListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +67,10 @@ public class HomeScreen extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        CalendarCustomView mView = (CalendarCustomView)findViewById(R.id.custom_calendar);
+         mView = (CalendarCustomView)findViewById(R.id.custom_calendar);
         mView.mONOnLoadingButtonClickListener(this);
         scheduleList = (RecyclerView)findViewById(R.id.scheduleList);
+
 
 
 
@@ -177,6 +179,7 @@ if(id == R.id.nav_profile){
         scheduleBeen =  homeHandler.getDayscheduleList(Str_date,daYid);
         scheduledateListAdapter =  new ScheduledateListAdapter(scheduleBeen,HomeScreen.this);
         scheduleList.setAdapter(scheduledateListAdapter);
+        mView.mAdapter.setSelected(date.getDate());
 
     }
 
