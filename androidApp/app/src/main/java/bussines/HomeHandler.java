@@ -87,7 +87,8 @@ public class HomeHandler {
                 scheduleBean.setScheduleName(cursor.getString(1));
                 scheduleBean.setScheduleTimeTo(cursor.getString(2));
                 scheduleBean.setScheduleTimeFrom(cursor.getString(3));
-                scheduleBean.setCapacity(cursor.getString(4));
+                scheduleBean.setCapacity(cursor.getString(6));
+                scheduleBean.setAppointmentCount(cursor.getString(7));
                 scheduleBeanList.add(scheduleBean);
             } while (cursor.moveToNext());
         }
@@ -96,9 +97,4 @@ public class HomeHandler {
         //   db.close();
         return scheduleBeanList;
     }
-
-
-
-
-
 }

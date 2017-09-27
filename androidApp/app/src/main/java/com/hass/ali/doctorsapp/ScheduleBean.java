@@ -13,6 +13,16 @@ public class ScheduleBean {
     String scheduleTimeTo;
     String scheduleTimeFrom;
 
+    public String getAppointmentCount() {
+        return appointmentCount;
+    }
+
+    public void setAppointmentCount(String appointmentCount) {
+        this.appointmentCount = appointmentCount;
+    }
+
+    String appointmentCount;
+
     public String getScheduledateFrom() {
         return scheduledateFrom;
     }

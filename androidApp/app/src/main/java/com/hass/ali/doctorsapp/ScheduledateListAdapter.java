@@ -19,13 +19,15 @@ public class ScheduledateListAdapter extends RecyclerView.Adapter<ScheduledateLi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name;
+        public TextView name,capacity,appointment;
        // public ImageView profilePic;
 
         public MyViewHolder(View view) {
             super(view);
 
             this.name = (TextView) view.findViewById(R.id.schedule_name);
+            this.capacity = (TextView) view.findViewById(R.id.capacity_Ed);
+            this.appointment = (TextView) view.findViewById(R.id.appointment_Ed);
 
 
         }
@@ -43,6 +45,8 @@ public class ScheduledateListAdapter extends RecyclerView.Adapter<ScheduledateLi
         ScheduleBean scheBean = scheduleBeanList.get(position);
 
         holder.name.setText(scheBean.getScheduleName());
+        holder.capacity.setText("Capacity:"+scheBean.getCapacity());
+        holder.appointment.setText("Appointments:"+scheBean.getAppointmentCount());
 
 
 
