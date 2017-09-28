@@ -1,13 +1,22 @@
 package com.hass.ali.doctorsapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Ali.Zohair on 8/23/2017.
  */
 
-public class ScheduleBean {
+public class ScheduleBean implements Serializable {
+    public String getCurrentDate() {
+        return currentDate;
+    }
 
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
+    }
+
+    String currentDate;
     String scheduleName;
     String scheduleID;
     String scheduleTimeTo;

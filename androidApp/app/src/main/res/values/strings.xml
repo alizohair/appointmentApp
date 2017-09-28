@@ -24,9 +24,6 @@
     <string name="title_activity_schedule_form">ScheduleForm</string>
 
 
-
-
-
     <string name="current_date">June, 2016</string>
     <string name="add_event">ADD CALENDAR EVENT</string>
     <string name="sun">SUN</string>
@@ -37,11 +34,6 @@
     <string name="fri">FRI</string>
     <string name="sat">SAT</string>
     <string name="last_date">30</string>
-
-
-
-
-
 
 
 </resources>

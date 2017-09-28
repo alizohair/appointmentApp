@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -41,6 +42,7 @@ public class HomeScreen extends AppCompatActivity
     private RecyclerView scheduleList;
      private ArrayList<ScheduleBean> scheduleBeen ;
     CalendarCustomView mView;
+    TextView todayText;
     ScheduledateListAdapter scheduledateListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,17 @@ public class HomeScreen extends AppCompatActivity
         mView.mONOnLoadingButtonClickListener(this);
         scheduleList = (RecyclerView)findViewById(R.id.scheduleList);
 
-
+        todayText = (TextView)findViewById(R.id.todayText);
+        todayText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    refreshScheduleList(currentDate.getTime());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
         scheduleBeen = new ArrayList<>();

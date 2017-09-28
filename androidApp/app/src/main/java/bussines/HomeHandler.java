@@ -89,6 +89,7 @@ public class HomeHandler {
                 scheduleBean.setScheduleTimeFrom(cursor.getString(3));
                 scheduleBean.setCapacity(cursor.getString(6));
                 scheduleBean.setAppointmentCount(cursor.getString(7));
+                scheduleBean.setCurrentDate(Str_date);
                 scheduleBeanList.add(scheduleBean);
             } while (cursor.moveToNext());
         }

@@ -1,11 +1,14 @@
 package com.hass.ali.doctorsapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -20,6 +23,7 @@ public class ScheduledateListAdapter extends RecyclerView.Adapter<ScheduledateLi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name,capacity,appointment;
+        ImageButton addAppointmentBtn;
        // public ImageView profilePic;
 
         public MyViewHolder(View view) {
@@ -28,6 +32,7 @@ public class ScheduledateListAdapter extends RecyclerView.Adapter<ScheduledateLi
             this.name = (TextView) view.findViewById(R.id.schedule_name);
             this.capacity = (TextView) view.findViewById(R.id.capacity_Ed);
             this.appointment = (TextView) view.findViewById(R.id.appointment_Ed);
+            this.addAppointmentBtn = (ImageButton) view.findViewById(R.id.addAppointment);
 
 
         }
@@ -42,11 +47,20 @@ public class ScheduledateListAdapter extends RecyclerView.Adapter<ScheduledateLi
     @Override
     public void onBindViewHolder(ScheduledateListAdapter.MyViewHolder holder, final int position) {
 
-        ScheduleBean scheBean = scheduleBeanList.get(position);
+        final ScheduleBean scheBean = scheduleBeanList.get(position);
 
         holder.name.setText(scheBean.getScheduleName());
         holder.capacity.setText("Capacity:"+scheBean.getCapacity());
         holder.appointment.setText("Appointments:"+scheBean.getAppointmentCount());
+        holder.addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ctx,NewAppoinment.class);
+                intent.putExtra("ScheduleBean",scheBean);
+                ctx.startActivity(intent);
+
+            }
+        });
 
 
 
