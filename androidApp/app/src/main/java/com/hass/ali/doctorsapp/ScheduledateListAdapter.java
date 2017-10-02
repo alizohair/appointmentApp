@@ -55,7 +55,7 @@ public class ScheduledateListAdapter extends RecyclerView.Adapter<ScheduledateLi
         holder.addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ctx,NewAppoinment.class);
+                Intent intent = new Intent(ctx,NewAppoint.class);
                 intent.putExtra("ScheduleBean",scheBean);
                 ctx.startActivity(intent);
 

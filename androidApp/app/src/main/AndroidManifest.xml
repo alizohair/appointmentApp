@@ -27,7 +27,7 @@
         <activity
             android:name=".HomeScreen"
             android:label="@string/title_activity_home_screen"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ScheduleListScreen"
             android:label="@string/title_activity_schedule_list_screen"
@@ -40,7 +40,15 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".NewAppoinment"></activity>
+        <activity android:name=".NewAppoinment" />
+        <activity
+            android:name=".NewAppoint"
+            android:label="@string/title_activity_new_appoint"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Add_member"
+            android:label="@string/title_activity_add_member"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

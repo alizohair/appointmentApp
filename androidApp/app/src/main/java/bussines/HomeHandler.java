@@ -2,6 +2,7 @@ package bussines;
 
 import android.database.Cursor;
 
+import com.hass.ali.doctorsapp.PatientBean;
 import com.hass.ali.doctorsapp.ScheduleBean;
 
 import java.util.ArrayList;
@@ -38,23 +39,6 @@ public class HomeHandler {
         }
 
 
-        for (int a= 0 ; a < scheduleBeanList.size();a++){
-
-            String daysSelect = "select day_id from schedule_day where schedule_id = ?";
-            String[] whereClause = {scheduleBeanList.get(a).getScheduleID()};
-            Cursor daysCursor = DBConnection.rawQuery(daysSelect, whereClause);
-            ArrayList<String> days = new ArrayList<>();
-            if (daysCursor.moveToFirst()) {
-                do {
-                    days.add(daysCursor.getString(0));
-
-
-                } while (daysCursor.moveToNext());
-            }
-            scheduleBeanList.get(a).setDays(days);
-
-        }
-
         //   db.close();
         return scheduleBeanList;
     }
@@ -62,8 +46,10 @@ public class HomeHandler {
 
 
 
+
     public ArrayList<ScheduleBean> getDayscheduleList(String Str_date,String day) throws Exception{
-      String asd =   "where appointment_date = '"+Str_date+" ";
+
+        String asd =   "where appointment_date = '"+Str_date+" ";
         // SQLiteDatabase db = databaseHandler.getWritableDatabase();
         String selectQuery = "SELECT s.*, a.appoint_count " +
                 "FROM schedule s " +
@@ -98,4 +84,29 @@ public class HomeHandler {
         //   db.close();
         return scheduleBeanList;
     }
+
+
+    public ArrayList<PatientBean> getPatient() throws Exception{
+
+
+        String select = "select patient_id,patient_name,contact_no from patient";
+        Cursor cursor =  DBConnection.rawQuery(select , null);
+
+        ArrayList<PatientBean> patientBeen = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                PatientBean patientBean = new PatientBean();
+                patientBean.setPatientID(cursor.getString(0));
+                patientBean.setPatientName(cursor.getString(1));
+                patientBean.setContactNo(cursor.getString(2));
+
+                patientBeen.add(patientBean );
+            } while (cursor.moveToNext());
+        }
+
+            return patientBeen;
+
+
+    }
+
 }

@@ -34,6 +34,8 @@
     <string name="fri">FRI</string>
     <string name="sat">SAT</string>
     <string name="last_date">30</string>
+    <string name="title_activity_new_appoint">NewAppoint</string>
+    <string name="title_activity_add_member">Add_member</string>
 
 
 </resources>
