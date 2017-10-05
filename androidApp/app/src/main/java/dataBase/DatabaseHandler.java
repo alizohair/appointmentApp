@@ -18,12 +18,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String createSchedule= "CREATE TABLE schedule (schedule_id INTEGER PRIMARY KEY,schedule_name TEXT,start_time TEXT,end_time TEXT,start_date TEXT,end_date TEXT,capacity int);";
     private static final String createScheduleDay= "CREATE TABLE schedule_day (schedule_id INTEGER, day_id INTEGER,FOREIGN KEY(schedule_id) REFERENCES schedule(schedule_id), PRIMARY KEY (schedule_id, day_id));";
     private static final String createAppointment= "CREATE TABLE appointment (appointment_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,schedule_id INTEGER,appointment_date TEXT,client_id INTEGER,status TEXT,token_no TEXT,token_datetime TEXT,token_reorder_time TEXT,availed_time TEXT);";
+
     private static final String createpatinet= "CREATE TABLE patient(patient_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, patient_name TEXT, father_name TEXT,age INTEGER,contact_no TEXT);";
 
 
-    private static final String patinet= "INSERT INTO \"patient\" VALUES(1,'Hassaan Khan','Mohsin',27,'03343673008');\n";
-    private static final String patinet1 ="INSERT INTO \"patient\" VALUES(2,'Zohair Abidi','Askari',27,'03333601437');\n" ;
+    private static final String patinet= "INSERT INTO \"patient\" VALUES(1,'Hassaan Khan','Mohsin',27,'03343673008');";
+    private static final String patinet1 ="INSERT INTO \"patient\" VALUES(2,'Zohair Abidi','Askari',27,'03333601437');" ;
     private static final String patinet2 = "INSERT INTO \"patient\" VALUES(3,'Saad Surya','Aslam',24,'03343535203');";
+
+
+
+
+    private static final String doctor = "INSERT INTO \"doctor\" VALUES(1,'Gohar Aalam','admin','admin');";
+    private static final String clinic = "INSERT INTO \"clinic\" VALUES(1,'Imam Clinic','5 star chorangi');";
+    private static final String doctor_clinic = "INSERT INTO \"doctor_clinic\" VALUES(1,1);";
+
+
+
+    private static final String createDoctor = "CREATE TABLE doctor(doctor_id INTEGER NOT NULL PRIMARY KEY,doctor_name TEXT,username TEXT,password TEXT);";
+    private static final String createClinic = "CREATE TABLE clinic(clinic_id INTEGER NOT NULL PRIMARY KEY, clinic_name TEXT, address TEXT);";
+    private static final String createDoctor_clinic = "CREATE TABLE doctor_clinic(doctor_id INTEGER NOT NULL, clinic_id INTEGER NOT NULL, FOREIGN KEY(doctor_id) REFERENCES doctor(doctor_id), FOREIGN KEY(clinic_id) REFERENCES clinic(clinic_id));";
+
+
+    private static final String schedule = "insert into schedule( schedule_id, schedule_name, start_time, end_time, start_date, end_date, capacity) values(1, 'Afternoon', '13:00:00', '16:00:00', '01-09-2017', null, 80);";
+    private static final String schedule1 = "insert into schedule( schedule_id, schedule_name, start_time, end_time, start_date, end_date, capacity) values(2, 'Night', '19:00:00', '22:00:00', '01-09-2017', null, 50);";
 
 
 
@@ -42,6 +60,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         database = db;
        createTables();
+        updateQuery();
     }
 
     @Override
@@ -49,8 +68,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         try{
             database = sqLiteDatabase;
-            database.execSQL(patinet1);
-            database.execSQL(patinet2);
+
         }catch (Exception e ){
             e.printStackTrace();
 
@@ -67,6 +85,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.execSQL(createAppointment);
     }
 
+    private void updateQuery(){
+
+        database.execSQL(createpatinet);
+        database.execSQL(createDoctor);
+        database.execSQL(createClinic);
+        database.execSQL(createDoctor_clinic);
+
+
+        database.execSQL(patinet);
+        database.execSQL(patinet1);
+        database.execSQL(patinet2);
+
+
+        database.execSQL(doctor);
+        database.execSQL(clinic);
+        database.execSQL(doctor_clinic);
+
+        database.execSQL(schedule);
+        database.execSQL(schedule1);
+
+
+
+
+    }
 
 
 }
