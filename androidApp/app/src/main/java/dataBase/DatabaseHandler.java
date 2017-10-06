@@ -22,16 +22,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String createpatinet= "CREATE TABLE patient(patient_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, patient_name TEXT, father_name TEXT,age INTEGER,contact_no TEXT);";
 
 
-    private static final String patinet= "INSERT INTO \"patient\" VALUES(1,'Hassaan Khan','Mohsin',27,'03343673008');";
-    private static final String patinet1 ="INSERT INTO \"patient\" VALUES(2,'Zohair Abidi','Askari',27,'03333601437');" ;
-    private static final String patinet2 = "INSERT INTO \"patient\" VALUES(3,'Saad Surya','Aslam',24,'03343535203');";
+    private static final String patinet= "INSERT INTO patient VALUES(1,'Hassaan Khan','Mohsin',27,'03343673008');";
+    private static final String patinet1 ="INSERT INTO patient VALUES(2,'Zohair Abidi','Askari',27,'03333601437');" ;
+    private static final String patinet2 = "INSERT INTO patient VALUES(3,'Saad Surya','Aslam',24,'03343535203');";
 
 
 
 
-    private static final String doctor = "INSERT INTO \"doctor\" VALUES(1,'Gohar Aalam','admin','admin');";
-    private static final String clinic = "INSERT INTO \"clinic\" VALUES(1,'Imam Clinic','5 star chorangi');";
-    private static final String doctor_clinic = "INSERT INTO \"doctor_clinic\" VALUES(1,1);";
+    private static final String doctor = "INSERT INTO doctor VALUES(1,'Gohar Aalam','admin','admin');";
+    private static final String clinic = "INSERT INTO clinic VALUES(1,'Imam Clinic','5 star chorangi');";
+    private static final String doctor_clinic = "INSERT INTO doctor_clinic VALUES(1,1);";
 
 
 
@@ -42,6 +42,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String schedule = "insert into schedule( schedule_id, schedule_name, start_time, end_time, start_date, end_date, capacity) values(1, 'Afternoon', '13:00:00', '16:00:00', '01-09-2017', null, 80);";
     private static final String schedule1 = "insert into schedule( schedule_id, schedule_name, start_time, end_time, start_date, end_date, capacity) values(2, 'Night', '19:00:00', '22:00:00', '01-09-2017', null, 50);";
+
+
+   private static final String day1 = "INSERT INTO schedule_day VALUES(1,'1');";
+   private static final String day2= "INSERT INTO schedule_day VALUES(2,'2');";
+   private static final String day3 = "INSERT INTO schedule_day VALUES(2,'4');";
+   private static final String day4= "INSERT INTO schedule_day VALUES(2,'6');";
+   private static final String day5 = "INSERT INTO schedule_day VALUES(1,'3');";
+   private static final String da6 = "INSERT INTO schedule_day VALUES(1,'5');";
+   private static final String day7 = "INSERT INTO schedule_day VALUES(1,'7');";
+   private static final String day8 = "INSERT INTO schedule_day VALUES(2,'7');";
+
+
+
+
+
+
+
 
 
 
@@ -57,10 +74,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        try{
         database = db;
        createTables();
         updateQuery();
+
+        }catch (Exception e ){
+            e.printStackTrace();
+
+        }
     }
 
     @Override
@@ -104,6 +126,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         database.execSQL(schedule);
         database.execSQL(schedule1);
+
+        database.execSQL(day1);
+        database.execSQL(day2);
+        database.execSQL(day3);
+        database.execSQL(day4);
+        database.execSQL(day5);
+        database.execSQL(da6);
+        database.execSQL(day7);
+        database.execSQL(day8);
 
 
 
