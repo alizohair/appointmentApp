@@ -1,7 +1,6 @@
 package com.hass.ali.doctorsapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapter.MyViewHolder>{
@@ -22,7 +20,7 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name,capacity,appointment;
+        public TextView name,capacity,endTime,startTime;
         ImageButton addAppointmentBtn;
        // public ImageView profilePic;
 
@@ -31,7 +29,8 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
 
             this.name = (TextView) view.findViewById(R.id.schedule_name);
             this.capacity = (TextView) view.findViewById(R.id.capacity_Ed);
-            this.appointment = (TextView) view.findViewById(R.id.appointment_Ed);
+            this.endTime = (TextView) view.findViewById(R.id.end_time);
+            this.startTime = (TextView) view.findViewById(R.id.startTime);
             this.addAppointmentBtn = (ImageButton) view.findViewById(R.id.addAppointment);
 
         }
@@ -39,7 +38,7 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
 
     @Override
     public ScheduleListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_list_layout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_list_screen_layout, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -50,16 +49,8 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
 
         holder.name.setText(scheBean.getScheduleName());
         holder.capacity.setText("Capacity: "+scheBean.getCapacity());
-        holder.appointment.setText("Appointments: "+(scheBean.getAppointmentCount() == null ? "0":scheBean.getAppointmentCount()));
-        holder.addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-             /*   Intent intent = new Intent(ctx,NewAppoint.class);
-                intent.putExtra("ScheduleBean",scheBean);
-                ctx.startActivity(intent);*/
-
-            }
-        });
+        holder.endTime.setText("End Time: "+scheBean.getScheduleTimeTo());
+        holder.startTime.setText("Start Time: "+scheBean.getScheduleTimeFrom());
 
 
 
