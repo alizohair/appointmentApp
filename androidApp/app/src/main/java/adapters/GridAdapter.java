@@ -64,6 +64,7 @@ public class GridAdapter extends ArrayAdapter {
             //view.setBackgroundColor(Color.parseColor("#FF5733"));
         }else{
             dateView.setEnabled(false);
+            dateView.setClickable(false);
             //view.setBackgroundColor(Color.parseColor("#cccccc"));
         }
 

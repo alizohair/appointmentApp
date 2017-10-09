@@ -16,6 +16,9 @@ import dataBase.DBConnection;
 
 public class HomeHandler {
 
+
+
+
     public List<ScheduleBean> getscheduleList() throws Exception{
 
         // SQLiteDatabase db = databaseHandler.getWritableDatabase();
@@ -82,6 +85,30 @@ public class HomeHandler {
 
 
         //   db.close();
+        return scheduleBeanList;
+    }
+
+
+
+     public ArrayList<ScheduleBean> getscheduleListFromDay(String dayId) throws Exception{
+      //
+        String selectQuery = "select * from schedule s  where exists (select * from schedule_day sd where sd.schedule_id = s.schedule_id and sd.day_id = ?);";
+        String[] strings = {dayId};
+        Cursor cursor =  DBConnection.rawQuery(selectQuery, strings);
+        // Cursor cursor = db.rawQuery(selectQuery, null);
+        ArrayList<ScheduleBean> scheduleBeanList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                ScheduleBean scheduleBean = new ScheduleBean();
+                scheduleBean.setScheduleID(cursor.getString(cursor.getColumnIndex("schedule_id")));
+                scheduleBean.setScheduleName(cursor.getString(cursor.getColumnIndex("schedule_name")));
+                scheduleBean.setScheduleTimeTo(cursor.getString(cursor.getColumnIndex("start_time")));
+                scheduleBean.setScheduleTimeFrom(cursor.getString(cursor.getColumnIndex("end_time")));
+                scheduleBean.setCapacity(cursor.getString(cursor.getColumnIndex("capacity")));
+
+                scheduleBeanList.add(scheduleBean);
+            } while (cursor.moveToNext());
+        }
         return scheduleBeanList;
     }
 

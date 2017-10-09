@@ -1,21 +1,43 @@
 package com.hass.ali.doctorsapp;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import bussines.DateFormater;
 import bussines.HomeHandler;
 
 public class NewAppoint extends AppCompatActivity {
-
+    AutoCompleteTextView patientName;
+    private static final int REQUEST_GET_MAP_LOCATION = 0;
+    TextView dateText;
+    ArrayAdapter<String> spinnerArrayAdapter;
+    ArrayList<ScheduleBean> scheduleBeen;
+    ArrayList<PatientBean> patientBeen;
+    Spinner spinner;
+    Button saveBtn;
+    private int mYear, mMonth, mDay, mHour, mMinute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,24 +46,135 @@ public class NewAppoint extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getIntent().getSerializableExtra("ScheduleBean");
+        final ScheduleBean scheBean =   (ScheduleBean)getIntent().getSerializableExtra("ScheduleBean");
+saveBtn = (Button)findViewById(R.id.saveBtn);
+
+        patientName = (AutoCompleteTextView) findViewById(R.id.edittext_name);
+
 
         ImageButton newCustomer = (ImageButton)findViewById(R.id.add_patient_btn);
-        newCustomer.setOnClickListener(new View.OnClickListener() {
+
+         dateText = (TextView)findViewById(R.id.dateText);
+
+        spinner = (Spinner)findViewById(R.id.spinner);
+        dateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(NewAppoint.this,Add_member.class));
+                // Get Current Date
+                Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(NewAppoint.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+                                dateText.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+
 
             }
         });
 
-        AutoCompleteTextView patientName = (AutoCompleteTextView) findViewById(R.id.edittext_name);
+
+
+        dateText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() != 0)
+                {
+                    HomeHandler homeHandler = new HomeHandler();
+                    try {
+                    scheduleBeen =  homeHandler.getscheduleListFromDay(DateFormater.getDayFromDateString(s.toString()));
+                        ArrayList<String> scheduleName = new ArrayList<String>();
+                        for(int a = 0;a< scheduleBeen.size() ;a++){
+                            scheduleName.add(scheduleBeen.get(a).getScheduleName());
+                        }
+
+                        if(scheduleBeen.size()<1){
+                            Toast.makeText(NewAppoint.this, "Date no available", Toast.LENGTH_SHORT).show();
+                        }
+                        spinnerArrayAdapter = new ArrayAdapter<String>(NewAppoint.this, android.R.layout.simple_spinner_item, scheduleName); //selected item will look like a spinner set from XML
+                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(spinnerArrayAdapter);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(NewAppoint.this, "s: "+e, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+        });
+
+
+
+        dateText.setText(scheBean.getCurrentDate());
+
+
+
+
+
+        newCustomer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivityForResult(new Intent(NewAppoint.this,Add_member.class), REQUEST_GET_MAP_LOCATION);
+
+              //  startActivity();
+
+            }
+        });
+
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_GET_MAP_LOCATION && resultCode == Activity.RESULT_OK) {
+            String patienId = data.getStringExtra("patienId");
+            String name = data.getStringExtra("name");
+            patientName.setText(name);
+
+        }
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         HomeHandler homeHandler = new HomeHandler();
         try {
 
             patientName.setThreshold(1);
-        ArrayList<PatientBean> patientBeen =  homeHandler.getPatient();
+         patientBeen =  homeHandler.getPatient();
 
             DepartmentArrayAdapter   mDepartmentArrayAdapter = new DepartmentArrayAdapter(NewAppoint.this, R.layout.simple_text_view, patientBeen);
             patientName.setAdapter(mDepartmentArrayAdapter);
@@ -50,8 +183,6 @@ public class NewAppoint extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public boolean onSupportNavigateUp() {

@@ -1,6 +1,8 @@
 package com.hass.ali.doctorsapp;
 
+import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -40,15 +42,15 @@ public class Add_member extends AppCompatActivity {
         edittext_name = (EditText) findViewById(R.id.edittext_name);
 
 
-        str_contact_no = contact_no.getText().toString();
-        str_age = age.getText().toString();
-        str_f_name = f_name.getText().toString();
-        str_edittext_name = edittext_name.getText().toString();
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                str_contact_no = contact_no.getText().toString();
+                str_age = age.getText().toString();
+                str_f_name = f_name.getText().toString();
+                str_edittext_name = edittext_name.getText().toString();
 
                 if(!str_contact_no.equalsIgnoreCase("") && !str_age.equalsIgnoreCase("") &&
                         !str_f_name.equalsIgnoreCase("") && !str_edittext_name.equalsIgnoreCase("")){
@@ -66,6 +68,10 @@ public class Add_member extends AppCompatActivity {
                             patieantCv.put("age",str_age);
 
                         DBConnection.insertRow("patient", patieantCv);
+                        Toast.makeText(Add_member.this, "Patient saved successfully.", Toast.LENGTH_SHORT).show();
+                        setResult(Activity.RESULT_OK,
+                                new Intent().putExtra("patienId", patientID).putExtra("name",str_edittext_name));
+                        finish();
 
                     } catch (Exception e) {
                         e.printStackTrace();
