@@ -14,10 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import bussines.HomeHandler;
 import dataBase.DBConnection;
 
 public class Add_member extends AppCompatActivity {
-
+    HomeHandler homeHandler;
     EditText contact_no,age,f_name,edittext_name;
     Button saveBtn;
 
@@ -42,7 +43,7 @@ public class Add_member extends AppCompatActivity {
         edittext_name = (EditText) findViewById(R.id.edittext_name);
 
 
-
+                homeHandler = new HomeHandler();
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +57,7 @@ public class Add_member extends AppCompatActivity {
                         !str_f_name.equalsIgnoreCase("") && !str_edittext_name.equalsIgnoreCase("")){
                     String patientID = null;
                     try {
-                        patientID = String.valueOf(getNewPatientId());
+                        patientID = String.valueOf(homeHandler.getNewId("patient"));
                     ContentValues patieantCv = new ContentValues();
 
                     patieantCv.put("patient_id",patientID);
@@ -96,7 +97,7 @@ public class Add_member extends AppCompatActivity {
     }
 
 
-    private int getNewPatientId() throws Exception{
+   /* private int getNewPatientId() throws Exception{
 
         //  SQLiteDatabase  db = databaseHandler.getWritableDatabase();
         String count = "";
@@ -115,6 +116,6 @@ public class Add_member extends AppCompatActivity {
         return Integer.parseInt(count) + 1;
 
 
-    }
+    }*/
 
 }

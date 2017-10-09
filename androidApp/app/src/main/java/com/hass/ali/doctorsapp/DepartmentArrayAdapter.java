@@ -21,6 +21,16 @@ public class DepartmentArrayAdapter extends ArrayAdapter<PatientBean> {
     private final ArrayList<PatientBean> mDepartments_Suggestion;
     private final int mLayoutResourceId;
 
+    public PatientBean getSelectedPatient() {
+        return selectedPatient;
+    }
+
+    public void setSelectedPatient(PatientBean selectedPatient) {
+        this.selectedPatient = selectedPatient;
+    }
+
+    private PatientBean selectedPatient;
+
     public DepartmentArrayAdapter(Context context, int resource, ArrayList<PatientBean> departments) {
         super(context, resource, departments);
         this.mContext = context;
@@ -65,6 +75,7 @@ public class DepartmentArrayAdapter extends ArrayAdapter<PatientBean> {
         return new Filter() {
             @Override
             public String convertResultToString(Object resultValue) {
+                setSelectedPatient((PatientBean) resultValue);
                 return ((PatientBean) resultValue).patientName;
             }
 

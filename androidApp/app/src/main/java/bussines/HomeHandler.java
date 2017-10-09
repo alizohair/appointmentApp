@@ -136,4 +136,46 @@ public class HomeHandler {
 
     }
 
+
+
+    public int getNewId(String tableName) throws Exception{
+
+        //  SQLiteDatabase  db = databaseHandler.getWritableDatabase();
+        String count = "";
+        String selectQuery = " select count (*) from " +tableName+";";
+        //   db = databaseHandler.getWritableDatabase();
+
+        Cursor cursor = DBConnection.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            count = cursor.getString(0);
+
+        }
+        //     db.close();
+
+        return Integer.parseInt(count) + 1;
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

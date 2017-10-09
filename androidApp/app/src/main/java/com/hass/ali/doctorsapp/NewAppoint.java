@@ -3,7 +3,9 @@ package com.hass.ali.doctorsapp;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,8 +27,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+
 import bussines.DateFormater;
 import bussines.HomeHandler;
+import dataBase.DBConnection;
+import extensions.ArrayListExtended;
 
 public class NewAppoint extends AppCompatActivity {
     AutoCompleteTextView patientName;
@@ -37,6 +42,7 @@ public class NewAppoint extends AppCompatActivity {
     ArrayList<PatientBean> patientBeen;
     Spinner spinner;
     Button saveBtn;
+    HomeHandler homeHandler;
     private int mYear, mMonth, mDay, mHour, mMinute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,8 @@ saveBtn = (Button)findViewById(R.id.saveBtn);
          dateText = (TextView)findViewById(R.id.dateText);
 
         spinner = (Spinner)findViewById(R.id.spinner);
+        homeHandler = new HomeHandler();
+
         dateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,6 +158,36 @@ saveBtn = (Button)findViewById(R.id.saveBtn);
             @Override
             public void onClick(View view) {
 
+
+                String appointmentId = null;
+                try {
+                    appointmentId = String.valueOf(homeHandler.getNewId("appointment"));
+                    ContentValues appointmentCv = new ContentValues();
+
+                    appointmentCv.put("appointment_id",appointmentId);
+                    appointmentCv.put("schedule_id",scheduleBeen.get(spinner.getSelectedItemPosition()).getScheduleID());
+                    appointmentCv.put("appointment_date",dateText.getText().toString());
+                    PatientBean selectedPatient = ((DepartmentArrayAdapter)patientName.getAdapter()).getSelectedPatient();
+                    appointmentCv.put("client_id",selectedPatient.getPatientID());
+                    appointmentCv.put("status","pending");
+
+
+                    if(DBConnection.insertRow("appointment", appointmentCv)){
+
+                        Toast.makeText(NewAppoint.this, "appointment save for date "+dateText.getText(), Toast.LENGTH_SHORT).show();
+                        finish();
+                    }else {
+
+                        Toast.makeText(NewAppoint.this, "appointment saving fail for date"+dateText.getText(), Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+                catch (Exception e){
+
+
+                }
+
+
             }
         });
 
@@ -189,6 +227,9 @@ saveBtn = (Button)findViewById(R.id.saveBtn);
         onBackPressed();
         return true;
     }
+
+
+
 
 
 }

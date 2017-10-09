@@ -51,7 +51,7 @@ public class ScheduledateListAdapter extends RecyclerView.Adapter<ScheduledateLi
 
         holder.name.setText(scheBean.getScheduleName());
         holder.capacity.setText("Capacity:"+scheBean.getCapacity());
-        holder.appointment.setText("Appointments:"+scheBean.getAppointmentCount());
+        holder.appointment.setText("Appointments:"+scheBean.getAppointmentCount() == null ? "0":scheBean.getAppointmentCount());
         holder.addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
