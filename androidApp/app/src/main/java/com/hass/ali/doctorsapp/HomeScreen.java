@@ -144,10 +144,16 @@ public class HomeScreen extends AppCompatActivity
 if(id == R.id.nav_profile){
 
 }
-        if(id == R.id.nav_schedule){
+      else  if(id == R.id.nav_schedule){
 
 
             startActivity(new Intent(HomeScreen.this,ScheduleListScreen.class));
+        }
+
+      else  if(id == R.id.nav_patient){
+
+
+            startActivity(new Intent(HomeScreen.this,PatientList.class));
         }
       /*  if (id == R.id.nav_camera) {
             // Handle the camera action
