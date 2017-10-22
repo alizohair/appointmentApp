@@ -34,6 +34,7 @@ import java.util.Locale;
 
 import adapters.CalendarCustomView;
 import bussines.HomeHandler;
+import bussines.RecyclerItemClickListener;
 
 
 public class HomeScreen extends AppCompatActivity
@@ -84,8 +85,14 @@ public class HomeScreen extends AppCompatActivity
                 }
             }
         });
-
-
+       /* scheduleList.addOnItemTouchListener(new RecyclerItemClickListener(HomeScreen.this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(HomeScreen.this, AppointmentList.class);
+                startActivity(intent);
+            }
+        }));
+*/
         scheduleBeen = new ArrayList<>();
          scheduledateListAdapter =  new ScheduledateListAdapter(scheduleBeen,HomeScreen.this);
 

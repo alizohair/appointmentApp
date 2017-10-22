@@ -41,11 +41,9 @@ public class ScheduleListScreen extends AppCompatActivity {
             public void onClick(View view) {
 
                 startActivity(new Intent(ScheduleListScreen.this,ScheduleForm.class));
-            /*    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+
             }
         });
-
 
         HomeHandler homeHandler = new HomeHandler();
              scheduleList = (RecyclerView)findViewById(R.id.schedule_list);
@@ -56,18 +54,10 @@ public class ScheduleListScreen extends AppCompatActivity {
             Toast.makeText(this,e+"",Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         scheduleList.setLayoutManager(mLayoutManager);
         scheduleList.setItemAnimator(new DefaultItemAnimator());
         scheduleList.setAdapter(scheduleListAdapter);
-
-       // CalendarView calendarView = (CalendarView)findViewById(R.id.compactcalendar_view);
-
-
-
-
-
 
 
     }

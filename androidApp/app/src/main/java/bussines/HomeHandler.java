@@ -4,6 +4,7 @@ import android.database.Cursor;
 
 import com.hass.ali.doctorsapp.PatientBean;
 import com.hass.ali.doctorsapp.ScheduleBean;
+import com.hass.ali.doctorsapp.appointmentBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +91,38 @@ public class HomeHandler {
 
 
 
+    public ArrayList<appointmentBean> getAppointmentList(String scheduleId,String appointmentDate,String status) throws Exception{
+        //
+        String selectQuery = "select * from appointment a inner join patient p on a.client_id = p.patient_id where schedule_id = ? and appointment_date = ? and status = coalesce(?, status)";
+        String[] strings = {scheduleId,appointmentDate,status};
+        Cursor cursor =  DBConnection.rawQuery(selectQuery, strings);
+        // Cursor cursor = db.rawQuery(selectQuery, null);
+        ArrayList<appointmentBean> appointmentBeanList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+
+
+                PatientBean patientBean = new PatientBean();
+                patientBean.setPatientID(cursor.getString(cursor.getColumnIndex("patient_id")));
+                patientBean.setPatientName(cursor.getString(cursor.getColumnIndex("patient_name")));
+                patientBean.setContactNo(cursor.getString(cursor.getColumnIndex("contact_no")));
+                appointmentBean appointmentBean = new appointmentBean();
+                //appointmentBean.setAppointment_date(cursor.getString(cursor.getColumnIndex("schedule_id")));
+                appointmentBean.setAppointment_id(cursor.getInt(cursor.getColumnIndex("appointment_id")));
+                appointmentBean.setSchedule_id(cursor.getInt(cursor.getColumnIndex("schedule_id")));
+                appointmentBean.setClient_id(cursor.getInt(cursor.getColumnIndex("client_id")));
+                appointmentBean.setAppointment_date(cursor.getString(cursor.getColumnIndex("appointment_date")));
+                appointmentBean.setStatus(cursor.getString(cursor.getColumnIndex("status")));
+                appointmentBean.setToken_no(cursor.getString(cursor.getColumnIndex("token_no")));
+                appointmentBean.setToken_datetime(cursor.getString(cursor.getColumnIndex("token_datetime")));
+                appointmentBean.setToken_reorder_time(cursor.getString(cursor.getColumnIndex("token_reorder_time")));
+                appointmentBean.setAvailed_time(cursor.getString(cursor.getColumnIndex("availed_time")));
+                appointmentBean.setPatientBean(patientBean);
+                appointmentBeanList.add(appointmentBean);
+            } while (cursor.moveToNext());
+        }
+        return appointmentBeanList;
+    }
      public ArrayList<ScheduleBean> getscheduleListFromDay(String dayId) throws Exception{
       //
         String selectQuery = "select * from schedule s  where exists (select * from schedule_day sd where sd.schedule_id = s.schedule_id and sd.day_id = ?);";

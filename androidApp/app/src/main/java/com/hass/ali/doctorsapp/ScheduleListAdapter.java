@@ -27,7 +27,7 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
         public MyViewHolder(View view) {
             super(view);
 
-            this.name = (TextView) view.findViewById(R.id.schedule_name);
+            this.name = (TextView) view.findViewById(R.id.name);
             this.capacity = (TextView) view.findViewById(R.id.capacity_Ed);
             this.endTime = (TextView) view.findViewById(R.id.end_time);
             this.startTime = (TextView) view.findViewById(R.id.startTime);

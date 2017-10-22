@@ -36,6 +36,8 @@
     <string name="last_date">30</string>
     <string name="title_activity_new_appoint">NewAppoint</string>
     <string name="title_activity_add_member">Add_member</string>
+    <string name="title_activity_appointment_list">AppointmentList</string>
+    <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_patient_list">PatientList</string>
 
 
