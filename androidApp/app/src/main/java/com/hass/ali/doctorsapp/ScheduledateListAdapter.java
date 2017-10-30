@@ -48,9 +48,8 @@ public class ScheduledateListAdapter extends RecyclerView.Adapter<ScheduledateLi
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(ctx, AppointmentList.class);
+                Intent intent = new Intent(ctx, AppointmentTab.class);
                 intent.putExtra("ScheduleBean", scheduleBeanList.get(mViewHolder.getAdapterPosition()));
-
                 ctx.startActivity(intent);
             }
         });

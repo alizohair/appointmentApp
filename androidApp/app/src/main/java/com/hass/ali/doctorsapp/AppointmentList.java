@@ -134,7 +134,7 @@ public class AppointmentList extends AppCompatActivity {
             try {
 
 
-                String status = "doosra";
+                String status = "pending";
 if((getArguments().getInt(ARG_SECTION_NUMBER)) == 1){
     status = "pending";
                 }
@@ -168,7 +168,7 @@ if((getArguments().getInt(ARG_SECTION_NUMBER)) == 1){
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
                 AppointmentListAdapter adapter = (AppointmentListAdapter)mRecyclerView.getAdapter();
-                adapter.remove(swipedPosition);
+                adapter.onItemRemove(viewHolder, mRecyclerView);
             }
 
         };

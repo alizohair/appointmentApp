@@ -2,6 +2,7 @@ package com.hass.ali.doctorsapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,5 +72,27 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         appointmentBeanList.remove(position);
         notifyItemRemoved(position);
     }
+
+
+
+    public void onItemRemove(final RecyclerView.ViewHolder viewHolder, final RecyclerView recyclerView) {
+        final int adapterPosition = viewHolder.getAdapterPosition();
+     //   final Photo mPhoto = photos.get(adapterPosition);
+        Snackbar snackbar = Snackbar
+                .make(recyclerView, "PHOTO REMOVED", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int mAdapterPosition = viewHolder.getAdapterPosition();
+
+                    }
+                });
+        snackbar.show();
+        appointmentBeanList.remove(adapterPosition);
+        notifyItemRemoved(adapterPosition);
+
+    }
+
+
 
 }
