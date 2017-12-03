@@ -138,6 +138,10 @@ saveBtn = (Button)findViewById(R.id.saveBtn);
 
         dateText.setText(scheBean.getCurrentDate());
 
+        for (int position = 0; position < scheduleBeen.size(); position++) {
+            if (scheBean.getScheduleID().equals(scheduleBeen.get(position).scheduleID))
+                ((Spinner) spinner).setSelection(position);
+        }
 
 
 

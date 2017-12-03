@@ -15,20 +15,24 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
+
 import bussines.HomeHandler;
 
 /**
  * Created by Hp on 10/28/2017.
  */
 
-public class PendingFragmentList extends Fragment {
+public class AvailedFragmentList extends Fragment {
 
-    public static PendingFragmentList newInstance() {
-        return new PendingFragmentList();
+    public static AvailedFragmentList newInstance() {
+        return new AvailedFragmentList();
     }
-    public PendingFragmentList(){}
+    public AvailedFragmentList(){}
     View view;
+    String status;
+    ScheduleBean scheBean;
     ArrayList<appointmentBean> list;
     AppointmentListAdapter appointmentListAdapter;
     RecyclerView appointmentList;
@@ -38,14 +42,14 @@ public class PendingFragmentList extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_appointment_list, container, false);
-        String status = "pending";
+         status = "availed";
 
         appointmentList = (RecyclerView) view.findViewById(R.id.appointment_list);
 
         HomeHandler homeHandler = new HomeHandler();
         try {
 
-            final ScheduleBean scheBean =   (ScheduleBean)  getActivity().getIntent().getSerializableExtra("ScheduleBean");
+          scheBean =   (ScheduleBean)  getActivity().getIntent().getSerializableExtra("ScheduleBean");
             list = homeHandler.getAppointmentList(scheBean.getScheduleID(),scheBean.getCurrentDate(),status);
 
             appointmentListAdapter = new AppointmentListAdapter(list,getActivity());
@@ -62,10 +66,17 @@ public class PendingFragmentList extends Fragment {
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
+        try {
+            appointmentListAdapter.refreshList(scheBean.getScheduleID(),scheBean.getCurrentDate(),status);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
     private static void setUpItemTouchHelper(final RecyclerView mRecyclerView) {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
 
@@ -96,13 +107,13 @@ public class PendingFragmentList extends Fragment {
                 if(swipeDir == 16){
 
                     try {
-                        adapter.onItemRemove(viewHolder, mRecyclerView,"pending");
+                        adapter.onItemRemove(viewHolder, mRecyclerView,"availed");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }else if(swipeDir == 32){
                     try {
-                        adapter.onChangeStatus(viewHolder, mRecyclerView,"pending");
+                        adapter.onChangeStatus(viewHolder, mRecyclerView,"availed");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

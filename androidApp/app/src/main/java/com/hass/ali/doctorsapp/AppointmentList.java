@@ -168,7 +168,11 @@ if((getArguments().getInt(ARG_SECTION_NUMBER)) == 1){
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
                 AppointmentListAdapter adapter = (AppointmentListAdapter)mRecyclerView.getAdapter();
-                adapter.onItemRemove(viewHolder, mRecyclerView);
+                try {
+                    adapter.onItemRemove(viewHolder, mRecyclerView,"Asd");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         };

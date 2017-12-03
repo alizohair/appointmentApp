@@ -22,7 +22,7 @@ public class DateFormater {
 
         int dayOfWeek =0;
         //dateTimeFormat =
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date date;
         try {
             date = formatter.parse(stringDate);

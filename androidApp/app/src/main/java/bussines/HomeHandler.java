@@ -1,7 +1,9 @@
 package bussines;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.hass.ali.doctorsapp.DepartmentArrayAdapter;
 import com.hass.ali.doctorsapp.PatientBean;
 import com.hass.ali.doctorsapp.ScheduleBean;
 import com.hass.ali.doctorsapp.appointmentBean;
@@ -169,7 +171,25 @@ public class HomeHandler {
 
     }
 
+public boolean changeStatus(String appointmentDate,String appointmentID,String scheduleID,String Status) throws Exception {
 
+
+    ContentValues appointmentCv = new ContentValues();
+
+
+    appointmentCv.put("status",Status);
+
+String[] where = {appointmentID,scheduleID,appointmentDate};
+
+
+    DBConnection.updateRecord("appointment", appointmentCv,"appointment_id = ? and schedule_id = ? and appointment_date = ? ",where);
+
+
+
+    return true;
+
+
+}
 
     public int getNewId(String tableName) throws Exception{
 

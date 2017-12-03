@@ -34,20 +34,22 @@ public class TokenedFragmentList extends Fragment {
     ArrayList<appointmentBean> list;
     AppointmentListAdapter appointmentListAdapter;
     RecyclerView appointmentList;
+    String status;
     private static Paint p = new Paint();
+     ScheduleBean scheBean;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_appointment_list, container, false);
-        String status = "tokened";
+        status = "tokened";
 
         appointmentList = (RecyclerView) view.findViewById(R.id.appointment_list);
 
         HomeHandler homeHandler = new HomeHandler();
         try {
 
-            final ScheduleBean scheBean =   (ScheduleBean)  getActivity().getIntent().getSerializableExtra("ScheduleBean");
+            scheBean =   (ScheduleBean)  getActivity().getIntent().getSerializableExtra("ScheduleBean");
             list = homeHandler.getAppointmentList(scheBean.getScheduleID(),scheBean.getCurrentDate(),status);
 
             appointmentListAdapter = new AppointmentListAdapter(list,getActivity());
@@ -63,7 +65,16 @@ public class TokenedFragmentList extends Fragment {
 
         return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        try {
+            appointmentListAdapter.refreshList(scheBean.getScheduleID(),scheBean.getCurrentDate(),status);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private static void setUpItemTouchHelper(final RecyclerView mRecyclerView) {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
@@ -90,9 +101,24 @@ public class TokenedFragmentList extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
+
                 AppointmentListAdapter adapter = (AppointmentListAdapter)mRecyclerView.getAdapter();
-                adapter.onItemRemove(viewHolder, mRecyclerView);
-             //   adapter.remove(swipedPosition);
+                if(swipeDir == 16){
+
+                    try {
+                        adapter.onItemRemove(viewHolder, mRecyclerView,"tokened");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else if(swipeDir == 32){
+                    try {
+                        adapter.onChangeStatus(viewHolder, mRecyclerView,"tokened");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
             }
 
 

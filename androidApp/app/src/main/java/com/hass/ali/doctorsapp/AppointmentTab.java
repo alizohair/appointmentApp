@@ -11,7 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AppointmentTab extends AppCompatActivity {
 
@@ -33,8 +35,26 @@ public class AppointmentTab extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         viewPager = (ViewPager) findViewById(R.id.container);
-        setupViewPager(viewPager);
+      viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
 
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+//Fragment fragment = ((ViewPagerAdapter)viewPager.getAdapter()).get
+                Fragment fragment = (Fragment) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+                fragment.onResume();
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+        setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -45,7 +65,7 @@ public class AppointmentTab extends AppCompatActivity {
         final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new PendingFragmentList(), "Pending");
         adapter.addFragment(new TokenedFragmentList(), "Tokened");
-        //adapter.addFragment(new EventsFragment(), "Events");
+        adapter.addFragment(new AvailedFragmentList(), "Availed");
         //adapter.addFragment(new ProInboxFragment(), "Inbox");
 
         viewPager.setAdapter(adapter);
@@ -55,13 +75,14 @@ public class AppointmentTab extends AppCompatActivity {
 
 
 
-
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
-
+private Map<Integer,String> integerStringMap ;
         private ViewPagerAdapter(FragmentManager manager) {
             super(manager);
+
+            integerStringMap = new HashMap<>();
         }
 
         @Override
@@ -86,6 +107,12 @@ public class AppointmentTab extends AppCompatActivity {
     }
 
 
+    public void refreshTabs(){
+
+
+
+        viewPager.getAdapter().notifyDataSetChanged();
+    }
 
 
 }
