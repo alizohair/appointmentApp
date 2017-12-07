@@ -1,8 +1,6 @@
 package com.hass.ali.doctorsapp;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,20 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-
 import android.widget.Toast;
-
-import java.util.ArrayList;
-
-import java.util.List;
-
 import bussines.HomeHandler;
-import dataBase.DBConnection;
 
 
 
 public class ScheduleListScreen extends AppCompatActivity {
-// tasdlkasldj
+
     private RecyclerView scheduleList;
 
     @Override
@@ -45,8 +36,15 @@ public class ScheduleListScreen extends AppCompatActivity {
             }
         });
 
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         HomeHandler homeHandler = new HomeHandler();
-             scheduleList = (RecyclerView)findViewById(R.id.schedule_list);
+        scheduleList = (RecyclerView)findViewById(R.id.schedule_list);
         ScheduleListAdapter scheduleListAdapter = null;
         try {
             scheduleListAdapter = new ScheduleListAdapter(homeHandler.getscheduleList(),ScheduleListScreen.this);
@@ -60,8 +58,8 @@ public class ScheduleListScreen extends AppCompatActivity {
         scheduleList.setAdapter(scheduleListAdapter);
 
 
-    }
 
+    }
 
     public boolean onSupportNavigateUp() {
         onBackPressed();

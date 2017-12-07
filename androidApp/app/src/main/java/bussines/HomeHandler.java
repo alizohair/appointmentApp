@@ -9,6 +9,7 @@ import com.hass.ali.doctorsapp.ScheduleBean;
 import com.hass.ali.doctorsapp.appointmentBean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import dataBase.DBConnection;
@@ -170,6 +171,41 @@ public class HomeHandler {
 
 
     }
+
+
+
+    public HashMap<String, Boolean> getMonthCapacity(String dateFrom, String dateTo) throws Exception{
+
+
+        String select = "SELECT appointment_date, SUM(NoOfAppointments) NoOfAppointments, SUM(Capacity) Capacity FROM ( SELECT appointment_date, COUNT(*) NoOfAppointments, MAX(capacity) Capacity FROM appointment a INNER JOIN schedule s on a.schedule_id = s.schedule_id WHERE appointment_date between ? and ? GROUP BY appointment_date, s.schedule_id ) GROUP BY appointment_date";
+
+        String[] where = {dateFrom,dateTo};
+        Cursor cursor =  DBConnection.rawQuery(select , where);
+        HashMap<String,Boolean> stringDateCapacityHashMap = new HashMap<>();
+        ArrayList<DateCapacity> patientBeen = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+
+                boolean full = false;
+
+                int appointment = cursor.getInt(cursor.getColumnIndex("NoOfAppointments"));
+                int capacity = cursor.getInt(cursor.getColumnIndex("Capacity"));
+                if(appointment == capacity)
+                    full = true;
+
+
+                stringDateCapacityHashMap.put(cursor.getString(cursor.getColumnIndex("appointment_date")),full);
+
+
+            } while (cursor.moveToNext());
+        }
+
+            return stringDateCapacityHashMap;
+
+
+    }
+
+
 
 public boolean changeStatus(String appointmentDate,String appointmentID,String scheduleID,String Status) throws Exception {
 

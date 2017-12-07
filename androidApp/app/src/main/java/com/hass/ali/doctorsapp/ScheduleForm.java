@@ -232,6 +232,7 @@ Button saveBtn;
 
                 try {
                     saveRecords(scheduleData,daysList);
+                    finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

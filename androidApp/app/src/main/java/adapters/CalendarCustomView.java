@@ -20,8 +20,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import bussines.DateCapacity;
+import bussines.HomeHandler;
 
 /**
  * Created by ali.zohair on 9/12/2017.
@@ -36,7 +40,7 @@ public class CalendarCustomView extends LinearLayout {
     private static final int MAX_CALENDAR_COLUMN = 42;
     private int month, year;
     private SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-    private Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+    public Calendar cal = Calendar.getInstance(Locale.ENGLISH);
     private Context context;
     public GridAdapter mAdapter;
     private OnLoadingButtonClickListener<Date> mONOnLoadingButtonClickListener;
@@ -99,7 +103,7 @@ public class CalendarCustomView extends LinearLayout {
         });
 
     }
-    private void setUpCalendarAdapter(){
+    public void setUpCalendarAdapter(){
         List<Date> dayValueInCells = new ArrayList<Date>();
      //   mQuery = new DatabaseQuery(context);
       //  List<EventObjects> mEvents = mQuery.getAllFutureEvents();
@@ -114,7 +118,21 @@ public class CalendarCustomView extends LinearLayout {
         Log.d(TAG, "Number of date " + dayValueInCells.size());
         String sDate = formatter.format(cal.getTime());
         currentDate.setText(sDate);
-        mAdapter = new GridAdapter(context, dayValueInCells, cal,cal.get(Calendar.DATE));
+
+        int currentMonth = cal.get(Calendar.MONTH) + 1;
+        int currentYear = cal.get(Calendar.YEAR);
+
+        String dateFrom = "01-"+currentMonth+"-"+currentYear;
+        String dateTo = "31-"+currentMonth+"-"+currentYear;
+        HomeHandler homeHandler = new HomeHandler();
+        HashMap<String, Boolean> dateScapacity = null;
+        try {
+            dateScapacity = homeHandler.getMonthCapacity(dateFrom,dateTo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mAdapter = new GridAdapter(context, dayValueInCells, cal,cal.get(Calendar.DATE),dateScapacity);
         calendarGridView.setAdapter(mAdapter);
     }
 

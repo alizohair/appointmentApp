@@ -14,9 +14,16 @@ import android.widget.TextView;
 
 import com.hass.ali.doctorsapp.R;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+
+import bussines.DateCapacity;
+import bussines.DateFormater;
+import bussines.HomeHandler;
 
 import static com.hass.ali.doctorsapp.LoginActivity.context;
 
@@ -32,14 +39,16 @@ public class GridAdapter extends ArrayAdapter {
     public int selected;
     public int currentdate;
     Context ctx;
+    HashMap<String, Boolean> dateScapacity;
   //  private List<EventObjects> allEvents;
-    public GridAdapter(Context ctx, List<Date> monthlyDates, Calendar currentDate,int selected) {
+    public GridAdapter(Context ctx, List<Date> monthlyDates, Calendar currentDate, int selected,   HashMap<String, Boolean> dateScapacity) {
         super(ctx, R.layout.single_cell_layout);
         this.monthlyDates = monthlyDates;
         this.currentDate = currentDate;
         this.selected = selected;
         this.currentdate = selected;
         this.ctx = ctx;
+        this.dateScapacity = dateScapacity;
        // this.allEvents = allEvents;
         mInflater = LayoutInflater.from(ctx);
     }
@@ -50,16 +59,20 @@ public class GridAdapter extends ArrayAdapter {
         Date mDate = monthlyDates.get(position);
         Calendar dateCal = Calendar.getInstance();
         dateCal.setTime(mDate);
+        String displayDate = DateFormater.getStringToDate(mDate);
         int dayValue = dateCal.get(Calendar.DAY_OF_MONTH);
         int displayMonth = dateCal.get(Calendar.MONTH) + 1;
         int displayYear = dateCal.get(Calendar.YEAR);
         int currentMonth = currentDate.get(Calendar.MONTH) + 1;
         int currentYear = currentDate.get(Calendar.YEAR);
         View view = convertView;
+
+
         if(view == null){
             view = mInflater.inflate(R.layout.single_cell_layout, parent, false);
         }
         TextView dateView = (TextView)view.findViewById(R.id.calendar_date_id);
+
         if(displayMonth == currentMonth && displayYear == currentYear){
             //view.setBackgroundColor(Color.parseColor("#FF5733"));
         }else{
@@ -69,6 +82,11 @@ public class GridAdapter extends ArrayAdapter {
         }
 
 
+
+        if(dateScapacity.get(displayDate) != null && dateScapacity.get(displayDate)){
+            view.setBackgroundColor(Color.parseColor("#80FF0000"));
+        }
+        else
         if(dateView.isEnabled() && dayValue == selected){
             view.setBackgroundColor(Color.parseColor("#BDBDBD"));
 

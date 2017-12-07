@@ -14,7 +14,17 @@ public class DateFormater {
 
 
 
+public  static String getStringToDate(Date date){
 
+    String dateString = null;
+    SimpleDateFormat sdfr = new SimpleDateFormat("dd-MM-yyyy");
+    try{
+        dateString = sdfr.format( date );
+    }catch (Exception ex ){
+        System.out.println(ex);
+    }
+    return dateString;
+}
     public static String getDayFromDateString(String stringDate)
     {
         String[] daysArray = new String[] {"7","1","2","3","4","5","6"};
