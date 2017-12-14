@@ -9,6 +9,7 @@ import com.hass.ali.doctorsapp.ScheduleBean;
 import com.hass.ali.doctorsapp.appointmentBean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,21 +27,33 @@ public class HomeHandler {
     public List<ScheduleBean> getscheduleList() throws Exception{
 
         // SQLiteDatabase db = databaseHandler.getWritableDatabase();
-        String selectQuery = "select schedule_id ID,schedule_name name,start_time startTime,end_time endtime,start_date startDate,end_date endDate,capacity capacity from schedule;";
+        String selectQuery = "select a.dayid dayid,s.schedule_id ID,schedule_name name,start_time startTime,end_time endtime,start_date startDate,end_date endDate,capacity capacity from schedule s left join (select group_concat(day_id) dayid,schedule_id sid from schedule_day group by schedule_id) as a ON  s.schedule_id = a.sid";
         Cursor cursor =  DBConnection.rawQuery(selectQuery, null);
         // Cursor cursor = db.rawQuery(selectQuery, null);
         ArrayList<ScheduleBean> scheduleBeanList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
                 ScheduleBean scheduleBean = new ScheduleBean();
-                scheduleBean.setScheduleID(cursor.getString(0));
-                scheduleBean.setScheduleName(cursor.getString(1));
-                scheduleBean.setScheduleTimeTo(cursor.getString(2));
-                scheduleBean.setScheduleTimeFrom(cursor.getString(3));
-                scheduleBean.setScheduledateFrom(cursor.getString(4));
-                scheduleBean.setScheduledateto(cursor.getString(5));
+                scheduleBean.setScheduleID(cursor.getString(cursor.getColumnIndex("ID")));
+                scheduleBean.setScheduleName(cursor.getString(cursor.getColumnIndex("name")));
 
-                scheduleBean.setCapacity(cursor.getString(6));
+
+                scheduleBean.setScheduleTimeTo(cursor.getString(cursor.getColumnIndex("startTime")));
+
+                scheduleBean.setScheduleTimeFrom(cursor.getString(cursor.getColumnIndex("endtime")));
+
+                scheduleBean.setScheduledateFrom(cursor.getString(cursor.getColumnIndex("startDate")));
+
+                scheduleBean.setScheduledateto(cursor.getString(cursor.getColumnIndex("endDate")));
+
+                scheduleBean.setCapacity(cursor.getString(cursor.getColumnIndex("capacity")));
+
+
+
+                String[] dayIDs = cursor.getString(cursor.getColumnIndex("dayid")).split(",");
+
+                scheduleBean.setDays(new ArrayList( Arrays.asList( dayIDs) ));
+
                 scheduleBeanList.add(scheduleBean);
             } while (cursor.moveToNext());
         }

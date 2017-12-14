@@ -10,14 +10,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
-import bussines.HomeHandler;
 
+import java.util.List;
+
+import bussines.HomeHandler;
+import bussines.RecyclerItemClickListener;
 
 
 public class ScheduleListScreen extends AppCompatActivity {
 
     private RecyclerView scheduleList;
-
+    private  List<ScheduleBean> scheduleBeanList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,7 @@ public class ScheduleListScreen extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        scheduleList = (RecyclerView)findViewById(R.id.schedule_list);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,6 +41,16 @@ public class ScheduleListScreen extends AppCompatActivity {
         });
 
 
+        scheduleList.addOnItemTouchListener(new RecyclerItemClickListener(ScheduleListScreen.this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                ScheduleBean scheduleBean =  scheduleBeanList.get(position);
+                Intent intent = new Intent(ScheduleListScreen.this,ScheduleForm.class);
+                intent.putExtra("ScheduleBean", scheduleBean);
+                startActivity(intent);
+            }
+        }));
 
     }
 
@@ -44,10 +58,12 @@ public class ScheduleListScreen extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         HomeHandler homeHandler = new HomeHandler();
-        scheduleList = (RecyclerView)findViewById(R.id.schedule_list);
+
         ScheduleListAdapter scheduleListAdapter = null;
         try {
-            scheduleListAdapter = new ScheduleListAdapter(homeHandler.getscheduleList(),ScheduleListScreen.this);
+
+            scheduleBeanList = homeHandler.getscheduleList();
+            scheduleListAdapter = new ScheduleListAdapter(scheduleBeanList,ScheduleListScreen.this);
         } catch (Exception e) {
             Toast.makeText(this,e+"",Toast.LENGTH_LONG).show();
             e.printStackTrace();

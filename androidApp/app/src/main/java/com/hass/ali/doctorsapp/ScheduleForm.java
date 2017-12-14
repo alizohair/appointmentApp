@@ -31,13 +31,13 @@ import dataBase.DBConnection;
 public class ScheduleForm extends AppCompatActivity {
     TextView timeFrom;
     TextView timeTo;
-Button saveBtn;
+    Button saveBtn,updateBtn;
     TextView dateFrom;
     TextView dateTo;
     TextView name;
     TextView capacityET;
-   CheckBox CbMon,CbTue,CbWed,CbThu,CbFri,CbSat,CbSun;
-
+    CheckBox CbMon,CbTue,CbWed,CbThu,CbFri,CbSat,CbSun;
+    ScheduleBean scheBean;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
   //  SQLiteDatabase db ;
@@ -51,12 +51,14 @@ Button saveBtn;
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
+        scheBean =   (ScheduleBean) getIntent().getSerializableExtra("ScheduleBean");
+
         CbMon = (CheckBox)findViewById(R.id.check_mon);
-                CbTue = (CheckBox)findViewById(R.id.check_tue);
+        CbTue = (CheckBox)findViewById(R.id.check_tue);
         CbWed = (CheckBox)findViewById(R.id.check_wed);
-                CbThu = (CheckBox)findViewById(R.id.check_thu);
+        CbThu = (CheckBox)findViewById(R.id.check_thu);
         CbFri = (CheckBox)findViewById(R.id.check_fri);
-                CbSat = (CheckBox)findViewById(R.id.check_sat);
+        CbSat = (CheckBox)findViewById(R.id.check_sat);
         CbSun = (CheckBox)findViewById(R.id.check_sun);
 
 
@@ -64,8 +66,10 @@ Button saveBtn;
 
 
         saveBtn = (Button)findViewById(R.id.saveBtn);
+        updateBtn = (Button)findViewById(R.id.updateBtn);
 
-
+        saveBtn.setVisibility(View.VISIBLE);
+        updateBtn.setVisibility(View.GONE);
 
 
 
@@ -80,6 +84,45 @@ Button saveBtn;
         capacityET = (TextView) findViewById(R.id.capacity_Ed);
         dateFrom = (TextView) findViewById(R.id.textView_startDate);
         dateTo = (TextView) findViewById(R.id.textView_endDate);
+        timeFrom = (TextView) findViewById(R.id.textview_time_from);
+        timeTo= (TextView) findViewById(R.id.textview_time_to);
+       if(scheBean!=null){
+
+           saveBtn.setVisibility(View.GONE);
+           updateBtn.setVisibility(View.VISIBLE);
+
+           name.setText(scheBean.getScheduleName());
+           capacityET.setText(scheBean.getCapacity());
+           dateFrom.setText(scheBean.getScheduledateFrom());
+           dateTo.setText(scheBean.getScheduledateto());
+           timeFrom.setText(scheBean.getScheduleTimeFrom());
+           timeTo.setText(scheBean.getScheduleTimeTo());
+
+           for(int a = 0;a<scheBean.getDays().size();a++){
+
+               if(scheBean.getDays().get(a).equalsIgnoreCase("1")){
+                   CbMon.setChecked(true);
+               }else if(scheBean.getDays().get(a).equalsIgnoreCase("2")){
+                   CbTue.setChecked(true);
+               }else if(scheBean.getDays().get(a).equalsIgnoreCase("3")){
+                   CbWed.setChecked(true);
+               }else if(scheBean.getDays().get(a).equalsIgnoreCase("4")){
+                   CbThu.setChecked(true);
+               }else if(scheBean.getDays().get(a).equalsIgnoreCase("5")){
+                   CbFri.setChecked(true);
+               }else if(scheBean.getDays().get(a).equalsIgnoreCase("6")){
+                   CbSat.setChecked(true);
+               }else if(scheBean.getDays().get(a).equalsIgnoreCase("7")){
+                   CbSun.setChecked(true);
+               }
+
+           }
+
+       }
+
+
+
+
         dateFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,7 +183,7 @@ Button saveBtn;
 
 
 
-         timeFrom = (TextView) findViewById(R.id.textview_time_from);
+
         timeFrom.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -162,7 +205,7 @@ Button saveBtn;
             }
         });
 
-        timeTo= (TextView) findViewById(R.id.textview_time_to);
+
         timeTo.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -186,6 +229,22 @@ Button saveBtn;
 
             }
         });
+
+
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+
+
+
+
+
+            }
+        });
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -268,9 +327,7 @@ Button saveBtn;
 
 
     private void saveRecords(HashMap<String,String> scheduleData, ArrayList arrayList ) throws Exception{
-
      //   getNewScheduleId();
-
 
       String scheduleID = String.valueOf(getNewScheduleId());
         ContentValues scheduleCV = new ContentValues();
