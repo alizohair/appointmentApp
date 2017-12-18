@@ -95,8 +95,18 @@ public class HomeScreen extends AppCompatActivity
             }
         }));
 */
+
+        //refreshScheduleList();
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         scheduleBeen = new ArrayList<>();
-         scheduledateListAdapter =  new ScheduledateListAdapter(scheduleBeen,HomeScreen.this);
+        scheduledateListAdapter =  new ScheduledateListAdapter(scheduleBeen,HomeScreen.this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         scheduleList.setLayoutManager(mLayoutManager);
@@ -107,11 +117,8 @@ public class HomeScreen extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //refreshScheduleList();
-
 
     }
-
 
     @Override
     public void onBackPressed() {

@@ -147,6 +147,8 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
 
          changeStatus = "tokened";
 
+
+
      }else if(currentStatus.equalsIgnoreCase("tokened")){
 
          changeStatus = "availed";

@@ -219,7 +219,23 @@ public class HomeHandler {
     }
 
 
+public void assignTokenNumber(String appointmentDate,String appointmentID,String scheduleID,String tokenNumber) throws Exception {
 
+
+    ContentValues appointmentCv = new ContentValues();
+
+
+    appointmentCv.put("token_no",tokenNumber);
+    appointmentCv.put("token_reorder_time",tokenNumber);
+
+
+    String[] where = {appointmentID,scheduleID,appointmentDate};
+
+    DBConnection.updateRecord("appointment", appointmentCv,"appointment_id = ? and schedule_id = ? and appointment_date = ? ",where);
+
+
+
+}
 public boolean changeStatus(String appointmentDate,String appointmentID,String scheduleID,String Status) throws Exception {
 
 

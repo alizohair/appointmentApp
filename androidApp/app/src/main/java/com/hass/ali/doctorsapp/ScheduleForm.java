@@ -236,6 +236,7 @@ public class ScheduleForm extends AppCompatActivity {
             public void onClick(View view) {
 
 
+                Toast.makeText(ScheduleForm.this, "delete record before you update schedule", Toast.LENGTH_SHORT).show();
 
 
 
@@ -299,6 +300,61 @@ public class ScheduleForm extends AppCompatActivity {
 
             }
         });
+
+
+    }
+
+    private void saveScheduleForm(){
+
+
+        HashMap<String,String> scheduleData = new HashMap<String, String>();
+        scheduleData.put("name",name.getText().toString());
+        scheduleData.put("timeTo",timeTo.getText().toString());
+        scheduleData.put("timeFrom",timeFrom.getText().toString());
+        scheduleData.put("dateTo",dateTo.getText().toString());
+        scheduleData.put("dateFrom",dateFrom.getText().toString());
+        scheduleData.put("capacity",capacityET.getText().toString());
+
+
+
+        ArrayList daysList = new ArrayList();
+        if(CbMon.isChecked()){
+            daysList.add("1");
+
+        }
+        if(CbTue.isChecked()){
+
+            daysList.add("2");
+        }
+        if(CbWed.isChecked()){
+            daysList.add("3");
+        }
+        if(CbThu.isChecked()){
+
+            daysList.add("4");
+        }
+        if(CbFri.isChecked()){
+            daysList.add("5");
+
+        }
+        if(CbSat.isChecked()){
+
+            daysList.add("6");
+        }
+        if(CbSun.isChecked()){
+            daysList.add("7");
+
+        }
+
+        try {
+            saveRecords(scheduleData,daysList);
+            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
 
 
     }

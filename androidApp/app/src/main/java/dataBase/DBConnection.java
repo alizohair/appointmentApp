@@ -85,10 +85,10 @@ public class DBConnection {
 
 
 
-	public static boolean updateRecord(String query, ContentValues upDateValues, String whereCols, String[] whereValues)throws Exception
+	public static boolean updateRecord(String table, ContentValues upDateValues, String whereCols, String[] whereValues)throws Exception
 	{
 	//	try{
-			database.update(query, upDateValues , whereCols, whereValues);
+			database.update(table, upDateValues , whereCols, whereValues);
 		//}catch(Exception e){return false;}
 		return true;
 	}
