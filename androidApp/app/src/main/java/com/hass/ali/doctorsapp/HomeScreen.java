@@ -192,7 +192,7 @@ if(id == R.id.nav_profile){
 
     @Override
     public void onLoadingButtonClickListener(Date data) {
-        Toast.makeText(HomeScreen.this, data.toString(), Toast.LENGTH_LONG).show();
+     //   Toast.makeText(HomeScreen.this, data.toString(), Toast.LENGTH_LONG).show();
         HomeHandler homeHandler = new HomeHandler();
         try {
             refreshScheduleList(data);
