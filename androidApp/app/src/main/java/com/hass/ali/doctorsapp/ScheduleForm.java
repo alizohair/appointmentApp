@@ -251,12 +251,55 @@ public class ScheduleForm extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+
+                String str_timeTo = timeTo.getText().toString();
+              String  str_timeFrom = timeFrom.getText().toString();
+              String str_dateTO = dateTo.getText().toString();
+              String str_dateFrom = dateFrom.getText().toString();
+
+
+                if(str_timeTo == "" || str_timeFrom == "" || str_dateTO == "" || str_dateFrom == "" ){
+
+                    Toast.makeText(ScheduleForm.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    return ;
+
+                }
+                try {
+                SimpleDateFormat parser = new SimpleDateFormat("hh:mm a");
+                Date timeTO = parser.parse(str_timeTo);
+                Date timeFROM = parser.parse(str_timeFrom);
+
+                    if (timeFROM.compareTo(timeTO) > 0) {
+                        Toast.makeText(ScheduleForm.this, "time  to cannot be before time from ", Toast.LENGTH_SHORT).show();
+                        return ;
+                    }
+
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+
+                    Date dateTO = sdf.parse(str_dateTO);
+                    Date dateFROM = sdf.parse(str_dateFrom);
+
+                if (dateFROM.compareTo(dateTO) > 0) {
+                    Toast.makeText(ScheduleForm.this, "date to cannot be before date from ", Toast.LENGTH_SHORT).show();
+                    return ;
+                }
+
+
+
+
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 HashMap<String,String> scheduleData = new HashMap<String, String>();
                 scheduleData.put("name",name.getText().toString());
-                scheduleData.put("timeTo",timeTo.getText().toString());
-                scheduleData.put("timeFrom",timeFrom.getText().toString());
-                scheduleData.put("dateTo",dateTo.getText().toString());
-                scheduleData.put("dateFrom",dateFrom.getText().toString());
+                scheduleData.put("timeTo",str_timeTo);
+                scheduleData.put("timeFrom",str_timeFrom);
+                scheduleData.put("dateTo",str_dateTO);
+                scheduleData.put("dateFrom",str_dateFrom);
                 scheduleData.put("capacity",capacityET.getText().toString());
 
 
@@ -291,7 +334,7 @@ public class ScheduleForm extends AppCompatActivity {
                 }
 
                 try {
-                    saveRecords(scheduleData,daysList);
+                 //   saveRecords(scheduleData,daysList);
                     finish();
                 } catch (Exception e) {
                     e.printStackTrace();
