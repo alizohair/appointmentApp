@@ -11,6 +11,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import bussines.CustomItemClickListener;
@@ -76,16 +79,37 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     }
 
 
-
+    /**
+     * calls on left swap
+     * @param viewHolder
+     * @param recyclerView
+     * @param currentStatus
+     * @throws Exception
+     */
     public void onItemRemove(final RecyclerView.ViewHolder viewHolder, final RecyclerView recyclerView, final String currentStatus) throws Exception {
         final int adapterPosition = viewHolder.getAdapterPosition();
 
 
+        final HomeHandler homeHandler = new HomeHandler();
         String changeStatus = null;
+
+        String TokenNo = null;
+        String TokenDate = null;
+        String AvailedDate = null;
+        String reorderDate = null;
+        String DateTime;
+
+        DateFormat dateFormat = new SimpleDateFormat("dd--MM-yyyy HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+
+        DateTime = dateFormat.format(cal.getTime());
+        //System.out.println(dateFormat.format(cal.getTime()));
+
 
         if(currentStatus.equalsIgnoreCase("availed")){
 
             changeStatus = "tokened";
+
 
         }else if(currentStatus.equalsIgnoreCase("tokened")){
 
@@ -96,11 +120,10 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             changeStatus = "deleted";
         }
 
-        final HomeHandler homeHandler = new HomeHandler();
 
 
         final appointmentBean bean = appointmentBeanList.get(adapterPosition);
-        homeHandler.changeStatus(bean.appointment_date,String.valueOf(bean.appointment_id),String.valueOf(bean.schedule_id),changeStatus);
+        homeHandler.changeStatus(bean.appointment_date,String.valueOf(bean.appointment_id),String.valueOf(bean.schedule_id),changeStatus,null,null,null,null);
         // appointmentBeanList.remove(adapterPosition);
 
 
@@ -113,7 +136,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
 
 
                         try {
-                            homeHandler.changeStatus(bean.appointment_date,String.valueOf(bean.appointment_id),String.valueOf(bean.schedule_id),currentStatus);
+                            homeHandler.changeStatus(bean.appointment_date,String.valueOf(bean.appointment_id),String.valueOf(bean.schedule_id),currentStatus,null,null,null,null);
 
                             refreshList(String.valueOf(bean.schedule_id),bean.appointment_date,currentStatus);
 
@@ -136,29 +159,49 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
 
     }
 
- public void onChangeStatus(final RecyclerView.ViewHolder viewHolder, final RecyclerView recyclerView, final String currentStatus) throws Exception {
+
+    /**
+     * method call on right swap
+     * @param viewHolder
+     * @param recyclerView
+     * @param currentStatus
+     * @throws Exception
+     */
+ public void onChangeStatus(final RecyclerView.ViewHolder viewHolder, final RecyclerView recyclerView, final String currentStatus) throws Exception
+ {
         final int adapterPosition = viewHolder.getAdapterPosition();
      //   final Photo mPhoto = photos.get(adapterPosition);
 
-
+     final HomeHandler homeHandler = new HomeHandler();
      String changeStatus = null;
 
+     String TokenNo = null;
+     String TokenDate = null;
+     String AvailedDate = null;
+     String reorderDate = null;
+     String DateTime;
+
+     DateFormat dateFormat = new SimpleDateFormat("dd--MM-yyyy HH:mm:ss");
+     Calendar cal = Calendar.getInstance();
+
+     DateTime = dateFormat.format(cal.getTime());
+
      if(currentStatus.equalsIgnoreCase("pending")){
-
+         TokenNo = String.valueOf(homeHandler.getNewToken());
          changeStatus = "tokened";
-
+         TokenDate = DateTime;
 
 
      }else if(currentStatus.equalsIgnoreCase("tokened")){
-
+         AvailedDate = DateTime;
          changeStatus = "availed";
      }
 
-     final HomeHandler homeHandler = new HomeHandler();
+    // final HomeHandler homeHandler = new HomeHandler();
 
 
      final appointmentBean bean = appointmentBeanList.get(adapterPosition);
-     homeHandler.changeStatus(bean.appointment_date,String.valueOf(bean.appointment_id),String.valueOf(bean.schedule_id),changeStatus);
+     homeHandler.changeStatus(bean.appointment_date,String.valueOf(bean.appointment_id),String.valueOf(bean.schedule_id),changeStatus,TokenNo,TokenDate,AvailedDate,reorderDate);
     // appointmentBeanList.remove(adapterPosition);
 
 
@@ -171,7 +214,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
 
 
                      try {
-                         homeHandler.changeStatus(bean.appointment_date,String.valueOf(bean.appointment_id),String.valueOf(bean.schedule_id),currentStatus);
+                         homeHandler.changeStatus(bean.appointment_date,String.valueOf(bean.appointment_id),String.valueOf(bean.schedule_id),currentStatus,null,null,null,null);
 
                          refreshList(String.valueOf(bean.schedule_id),bean.appointment_date,currentStatus);
 

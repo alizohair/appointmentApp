@@ -109,7 +109,7 @@ public class HomeHandler {
 
     public ArrayList<appointmentBean> getAppointmentList(String scheduleId,String appointmentDate,String status) throws Exception{
         //
-        String selectQuery = "select * from appointment a inner join patient p on a.client_id = p.patient_id where schedule_id = ? and appointment_date = ? and status = coalesce(?, status)";
+        String selectQuery = "select * from appointment a inner join patient p on a.client_id = p.patient_id where schedule_id = ? and appointment_date = ? and status = coalesce(?, status) order by a.token_no";
         String[] strings = {scheduleId,appointmentDate,status};
         Cursor cursor =  DBConnection.rawQuery(selectQuery, strings);
         // Cursor cursor = db.rawQuery(selectQuery, null);
@@ -236,13 +236,34 @@ public void assignTokenNumber(String appointmentDate,String appointmentID,String
 
 
 }
-public boolean changeStatus(String appointmentDate,String appointmentID,String scheduleID,String Status) throws Exception {
+public boolean changeStatus(String appointmentDate,String appointmentID,String scheduleID,String Status,String tokenNo,String tokenDateTime,String availDateTime,String reorderTime) throws Exception {
 
 
     ContentValues appointmentCv = new ContentValues();
 
-
     appointmentCv.put("status",Status);
+
+if(Status.equalsIgnoreCase("pending|deleted") ||  tokenNo != null){
+
+    appointmentCv.put("token_no",tokenNo);
+}
+
+if(tokenDateTime != null){
+
+        appointmentCv.put("token_datetime",tokenDateTime);
+    }
+
+    if(Status.equalsIgnoreCase("tokened") || availDateTime != null){
+
+        appointmentCv.put("availed_time",availDateTime);
+    }
+
+
+    if(reorderTime != null){
+
+        appointmentCv.put("token_reorder_time",reorderTime);
+    }
+
 
 String[] where = {appointmentID,scheduleID,appointmentDate};
 
@@ -261,6 +282,28 @@ String[] where = {appointmentID,scheduleID,appointmentDate};
         //  SQLiteDatabase  db = databaseHandler.getWritableDatabase();
         String count = "";
         String selectQuery = " select count (*) from " +tableName+";";
+        //   db = databaseHandler.getWritableDatabase();
+
+        Cursor cursor = DBConnection.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            count = cursor.getString(0);
+
+        }
+        //     db.close();
+
+        return Integer.parseInt(count) + 1;
+
+
+    }
+
+
+   public int getNewToken() throws Exception{
+
+        //  SQLiteDatabase  db = databaseHandler.getWritableDatabase();
+        String count = "";
+        String selectQuery = "select  ifnull (max(TOKEN_NO),\"0\") as newToken from appointment;";
         //   db = databaseHandler.getWritableDatabase();
 
         Cursor cursor = DBConnection.rawQuery(selectQuery, null);
