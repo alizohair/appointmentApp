@@ -1,8 +1,10 @@
 package com.hass.ali.doctorsapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,17 +42,57 @@ public class ScheduleListScreen extends AppCompatActivity {
             }
         });
 
-
-        scheduleList.addOnItemTouchListener(new RecyclerItemClickListener(ScheduleListScreen.this, new RecyclerItemClickListener.OnItemClickListener() {
+        scheduleList.addOnItemTouchListener(new RecyclerItemClickListener(this,
+                scheduleList, new RecyclerItemClickListener.ClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onClick(View view, final int position) {
+                //Values are passing to activity & to fragment as well
 
                 ScheduleBean scheduleBean =  scheduleBeanList.get(position);
                 Intent intent = new Intent(ScheduleListScreen.this,ScheduleForm.class);
                 intent.putExtra("ScheduleBean", scheduleBean);
                 startActivity(intent);
             }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(ScheduleListScreen.this);
+                builder1.setMessage("Are you sure you want to delete.");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Toast.makeText(ScheduleListScreen.this, "Long press on position :",
+                                        Toast.LENGTH_LONG).show();
+                                dialog.cancel();
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+
+
+              /*  Toast.makeText(ScheduleListScreen.this, "Long press on position :"+position,
+                        Toast.LENGTH_LONG).show();*/
+            }
         }));
+       /* scheduleList.addOnItemTouchListener(new RecyclerItemClickListener(ScheduleListScreen.this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+        }));*/
 
     }
 
