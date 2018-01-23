@@ -324,6 +324,59 @@ String[] where = {appointmentID,scheduleID,appointmentDate};
 
 
 
+   public int getAppoinmentCount(String scheduleID) throws Exception{
+
+        //  SQLiteDatabase  db = databaseHandler.getWritableDatabase();
+        String count = "";
+        String selectQuery = "select count(*) from appointment where schedule_id = ?;";
+        //   db = databaseHandler.getWritableDatabase();
+       String[] where ={scheduleID};
+
+        Cursor cursor = DBConnection.rawQuery(selectQuery, where);
+
+        if (cursor.moveToFirst()) {
+
+            count = cursor.getString(0);
+
+        }
+        //     db.close();
+
+        return Integer.parseInt(count);
+
+
+    }
+
+
+   public boolean deleteSchedule(String scheduleID) throws Exception{
+
+
+                        int count =  getAppoinmentCount(scheduleID);
+
+        boolean deletet = false;
+       if(count<1){
+
+
+           String[] where ={scheduleID};
+
+           deletet=  DBConnection.deleteSKURecord("schedule","schedule_id", where);
+          if(deletet)
+           deletet=  DBConnection.deleteSKURecord("schedule_day","schedule_id", where);
+
+         //  deletet = true;
+
+       }
+
+
+
+        return deletet;
+
+
+    }
+
+
+
+
+
 
 
 

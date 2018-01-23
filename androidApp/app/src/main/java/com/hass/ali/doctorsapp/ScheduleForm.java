@@ -4,8 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,15 +14,14 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
+import bussines.HomeHandler;
 import dataBase.DBConnection;
 
 
@@ -38,9 +35,9 @@ public class ScheduleForm extends AppCompatActivity {
     TextView capacityET;
     CheckBox CbMon,CbTue,CbWed,CbThu,CbFri,CbSat,CbSun;
     ScheduleBean scheBean;
-    private int mYear, mMonth, mDay, mHour, mMinute;
 
-  //  SQLiteDatabase db ;
+    String Schedule_ID = null;
+    private int mYear, mMonth, mDay, mHour, mMinute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +88,7 @@ public class ScheduleForm extends AppCompatActivity {
            saveBtn.setVisibility(View.GONE);
            updateBtn.setVisibility(View.VISIBLE);
 
+           Schedule_ID = scheBean.getScheduleID();
            name.setText(scheBean.getScheduleName());
            capacityET.setText(scheBean.getCapacity());
            dateFrom.setText(scheBean.getScheduledateFrom());
@@ -235,6 +233,92 @@ public class ScheduleForm extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                String str_timeTo = timeTo.getText().toString();
+                String  str_timeFrom = timeFrom.getText().toString();
+                String str_dateTO = dateTo.getText().toString();
+                String str_dateFrom = dateFrom.getText().toString();
+
+
+                if(str_timeTo == "" || str_timeFrom == "" || str_dateTO == "" || str_dateFrom == "" ){
+
+                    Toast.makeText(ScheduleForm.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    return ;
+
+                }
+                try {
+                    SimpleDateFormat parser = new SimpleDateFormat("hh:mm a");
+                    Date timeTO = parser.parse(str_timeTo);
+                    Date timeFROM = parser.parse(str_timeFrom);
+
+                    if (timeFROM.compareTo(timeTO) > 0) {
+                        Toast.makeText(ScheduleForm.this, "time  to cannot be before time from ", Toast.LENGTH_SHORT).show();
+                        return ;
+                    }
+
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+
+                    Date dateTO = sdf.parse(str_dateTO);
+                    Date dateFROM = sdf.parse(str_dateFrom);
+
+                    if (dateFROM.compareTo(dateTO) > 0) {
+                        Toast.makeText(ScheduleForm.this, "date to cannot be before date from ", Toast.LENGTH_SHORT).show();
+                        return ;
+                    }
+
+
+
+
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                HashMap<String,String> scheduleData = new HashMap<String, String>();
+                scheduleData.put("name",name.getText().toString());
+                scheduleData.put("timeTo",str_timeTo);
+                scheduleData.put("timeFrom",str_timeFrom);
+                scheduleData.put("dateTo",str_dateTO);
+                scheduleData.put("dateFrom",str_dateFrom);
+                scheduleData.put("capacity",capacityET.getText().toString());
+
+
+
+                ArrayList daysList = new ArrayList();
+                if(CbMon.isChecked()){
+                    daysList.add("1");
+
+                }
+                if(CbTue.isChecked()){
+
+                    daysList.add("2");
+                }
+                if(CbWed.isChecked()){
+                    daysList.add("3");
+                }
+                if(CbThu.isChecked()){
+
+                    daysList.add("4");
+                }
+                if(CbFri.isChecked()){
+                    daysList.add("5");
+
+                }
+                if(CbSat.isChecked()){
+
+                    daysList.add("6");
+                }
+                if(CbSun.isChecked()){
+                    daysList.add("7");
+
+                }
+
+                try {
+                    saveRecords(scheduleData,daysList);
+                    finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 Toast.makeText(ScheduleForm.this, "delete record before you update schedule", Toast.LENGTH_SHORT).show();
 
@@ -334,7 +418,26 @@ public class ScheduleForm extends AppCompatActivity {
                 }
 
                 try {
-                 //   saveRecords(scheduleData,daysList);
+
+                    HomeHandler homeHandler = new HomeHandler();
+                    try {
+
+                        if(homeHandler.deleteSchedule(Schedule_ID))
+                        {
+
+                            saveRecords(scheduleData,daysList);
+                            Toast.makeText(ScheduleForm.this, "Schedule deleted",
+                                    Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(ScheduleForm.this, "could not update schedule, already appointment taken",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                     finish();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -426,6 +529,47 @@ public class ScheduleForm extends AppCompatActivity {
 
 
     private void saveRecords(HashMap<String,String> scheduleData, ArrayList arrayList ) throws Exception{
+     //   getNewScheduleId();
+
+        if(Schedule_ID == null){
+
+             Schedule_ID = String.valueOf(getNewScheduleId());
+        }
+        ContentValues scheduleCV = new ContentValues();
+        scheduleCV.put("schedule_id",Schedule_ID);
+        scheduleCV.put("schedule_name", scheduleData.get("name"));
+        scheduleCV.put("start_time", scheduleData.get("timeTo"));
+        scheduleCV.put("end_time", scheduleData.get("timeFrom"));
+        scheduleCV.put("start_date", scheduleData.get("dateTo"));
+        scheduleCV.put("end_date", scheduleData.get("dateFrom"));
+        scheduleCV.put("capacity", scheduleData.get("capacity"));
+       // SQLiteDatabase  db = databaseHandler.getWritableDatabase();
+        DBConnection.setBeginTransaction(true);
+       // db.beginTransaction();
+        DBConnection.insertRow("schedule", scheduleCV);
+
+
+        for(int a = 0; a < arrayList.size();a++){
+
+            ContentValues scheduleDaysCV = new ContentValues();
+            scheduleDaysCV.put("schedule_id",Schedule_ID);
+            scheduleDaysCV.put("day_id", String.valueOf(arrayList.get(a)));
+            DBConnection.insertRow("schedule_day", scheduleDaysCV);
+           // db.insert("schedule_day", null, scheduleDaysCV);
+
+}
+        DBConnection.committTransaction();
+
+        Toast.makeText(this, "save successfully", Toast.LENGTH_SHORT).show();
+
+
+    }
+
+
+
+
+
+  private void UPDATERecords(HashMap<String,String> scheduleData, ArrayList arrayList ) throws Exception{
      //   getNewScheduleId();
 
       String scheduleID = String.valueOf(getNewScheduleId());

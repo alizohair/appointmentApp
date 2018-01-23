@@ -107,26 +107,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.execSQL(createDoctor_clinic);
 
 
-        database.execSQL(patinet);
-        database.execSQL(patinet1);
-        database.execSQL(patinet2);
+       // database.execSQL(patinet);
+      //  database.execSQL(patinet1);
+       // database.execSQL(patinet2);
 
 
-        database.execSQL(doctor);
-        database.execSQL(clinic);
-        database.execSQL(doctor_clinic);
+      //  database.execSQL(doctor);
+      //  database.execSQL(clinic);
+      //  database.execSQL(doctor_clinic);
 
-        database.execSQL(schedule);
-        database.execSQL(schedule1);
+      //  database.execSQL(schedule);
+      //  database.execSQL(schedule1);
 
-        database.execSQL(day1);
-        database.execSQL(day2);
-        database.execSQL(day3);
-        database.execSQL(day4);
-        database.execSQL(day5);
-        database.execSQL(da6);
-        database.execSQL(day7);
-        database.execSQL(day8);
+      //  database.execSQL(day1);
+      //  database.execSQL(day2);
+      //  database.execSQL(day3);
+       // database.execSQL(day4);
+      //  database.execSQL(day5);
+       // database.execSQL(da6);
+       // database.execSQL(day7);
+      //  database.execSQL(day8);
 
 
 

@@ -56,7 +56,7 @@ public class ScheduleListScreen extends AppCompatActivity {
 
             @Override
             public void onLongClick(View view, int position) {
-
+                final ScheduleBean scheduleBean =  scheduleBeanList.get(position);
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(ScheduleListScreen.this);
                 builder1.setMessage("Are you sure you want to delete.");
                 builder1.setCancelable(true);
@@ -65,8 +65,24 @@ public class ScheduleListScreen extends AppCompatActivity {
                         "Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Toast.makeText(ScheduleListScreen.this, "Long press on position :",
-                                        Toast.LENGTH_LONG).show();
+
+                                HomeHandler homeHandler = new HomeHandler();
+                                try {
+
+                               if(homeHandler.deleteSchedule(scheduleBean.scheduleID))
+                               {
+                                   Toast.makeText(ScheduleListScreen.this, "Schedule deleted",
+                                           Toast.LENGTH_LONG).show();
+                               }else {
+                                   Toast.makeText(ScheduleListScreen.this, "could not delete schedule, already appointment taken",
+                                           Toast.LENGTH_LONG).show();
+                               }
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+
                                 dialog.cancel();
                             }
                         });
