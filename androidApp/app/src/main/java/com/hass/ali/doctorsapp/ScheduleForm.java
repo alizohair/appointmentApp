@@ -313,14 +313,34 @@ public class ScheduleForm extends AppCompatActivity {
 
                 }
 
+
                 try {
-                    saveRecords(scheduleData,daysList);
+
+                    HomeHandler homeHandler = new HomeHandler();
+                    try {
+
+                        if(homeHandler.deleteSchedule(Schedule_ID))
+                        {
+
+                            saveRecords(scheduleData,daysList);
+                         //   Toast.makeText(ScheduleForm.this, "Schedule deleted",
+                           //         Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(ScheduleForm.this, "could not update schedule, already appointment taken",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                     finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                Toast.makeText(ScheduleForm.this, "delete record before you update schedule", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(ScheduleForm.this, "delete record before you update schedule", Toast.LENGTH_SHORT).show();
 
 
 
@@ -417,32 +437,14 @@ public class ScheduleForm extends AppCompatActivity {
 
                 }
 
+
+
                 try {
-
-                    HomeHandler homeHandler = new HomeHandler();
-                    try {
-
-                        if(homeHandler.deleteSchedule(Schedule_ID))
-                        {
-
-                            saveRecords(scheduleData,daysList);
-                            Toast.makeText(ScheduleForm.this, "Schedule deleted",
-                                    Toast.LENGTH_LONG).show();
-                        }else {
-                            Toast.makeText(ScheduleForm.this, "could not update schedule, already appointment taken",
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
+                    saveRecords(scheduleData,daysList);
                     finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
 
             }
         });
@@ -540,8 +542,8 @@ public class ScheduleForm extends AppCompatActivity {
         scheduleCV.put("schedule_name", scheduleData.get("name"));
         scheduleCV.put("start_time", scheduleData.get("timeTo"));
         scheduleCV.put("end_time", scheduleData.get("timeFrom"));
-        scheduleCV.put("start_date", scheduleData.get("dateTo"));
-        scheduleCV.put("end_date", scheduleData.get("dateFrom"));
+        scheduleCV.put("start_date", scheduleData.get("dateFrom"));
+        scheduleCV.put("end_date", scheduleData.get("dateTo"));
         scheduleCV.put("capacity", scheduleData.get("capacity"));
        // SQLiteDatabase  db = databaseHandler.getWritableDatabase();
         DBConnection.setBeginTransaction(true);
