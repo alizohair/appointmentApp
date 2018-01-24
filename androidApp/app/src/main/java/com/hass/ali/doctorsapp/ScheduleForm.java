@@ -316,19 +316,16 @@ public class ScheduleForm extends AppCompatActivity {
 
                 try {
 
-                    HomeHandler homeHandler = new HomeHandler();
+
                     try {
 
-                        if(homeHandler.deleteSchedule(Schedule_ID))
-                        {
 
-                            saveRecords(scheduleData,daysList);
+
+
+                            UPDATERecords(scheduleData,daysList);
                          //   Toast.makeText(ScheduleForm.this, "Schedule deleted",
                            //         Toast.LENGTH_LONG).show();
-                        }else {
-                            Toast.makeText(ScheduleForm.this, "could not update schedule, already appointment taken",
-                                    Toast.LENGTH_LONG).show();
-                        }
+
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -573,10 +570,10 @@ public class ScheduleForm extends AppCompatActivity {
 
   private void UPDATERecords(HashMap<String,String> scheduleData, ArrayList arrayList ) throws Exception{
      //   getNewScheduleId();
-
+      HomeHandler homeHandler = new HomeHandler();
       String scheduleID = String.valueOf(getNewScheduleId());
         ContentValues scheduleCV = new ContentValues();
-        scheduleCV.put("schedule_id",scheduleID);
+       // scheduleCV.put("schedule_id",scheduleID);
         scheduleCV.put("schedule_name", scheduleData.get("name"));
         scheduleCV.put("start_time", scheduleData.get("timeTo"));
         scheduleCV.put("end_time", scheduleData.get("timeFrom"));
@@ -586,7 +583,11 @@ public class ScheduleForm extends AppCompatActivity {
        // SQLiteDatabase  db = databaseHandler.getWritableDatabase();
         DBConnection.setBeginTransaction(true);
        // db.beginTransaction();
-        DBConnection.insertRow("schedule", scheduleCV);
+       // DBConnection.insertRow("schedule", scheduleCV);
+
+      homeHandler.deleteScheduleDay(Schedule_ID);
+      String[] where ={scheduleID};
+        DBConnection.updateRecord("schedule", scheduleCV,"schedule_id = ?", where);
 
 
         for(int a = 0; a < arrayList.size();a++){
@@ -595,12 +596,12 @@ public class ScheduleForm extends AppCompatActivity {
             scheduleDaysCV.put("schedule_id",scheduleID);
             scheduleDaysCV.put("day_id", String.valueOf(arrayList.get(a)));
             DBConnection.insertRow("schedule_day", scheduleDaysCV);
-           // db.insert("schedule_day", null, scheduleDaysCV);
+           //db.insert("schedule_day", null, scheduleDaysCV);
 
 }
         DBConnection.committTransaction();
 
-        Toast.makeText(this, "save successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "update successfully", Toast.LENGTH_SHORT).show();
 
 
     }

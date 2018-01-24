@@ -91,7 +91,8 @@ public class DBConnection {
 	public static boolean updateRecord(String table, ContentValues upDateValues, String whereCols, String[] whereValues)throws Exception
 	{
 	//	try{
-			database.update(table, upDateValues , whereCols, whereValues);
+			if(database.update(table, upDateValues , whereCols, whereValues)<1)
+				throw new RuntimeException();
 		//}catch(Exception e){return false;}
 		return true;
 	}

@@ -23,6 +23,7 @@ public class ScheduleListScreen extends AppCompatActivity {
 
     private RecyclerView scheduleList;
     private  List<ScheduleBean> scheduleBeanList;
+    ScheduleListAdapter scheduleListAdapter = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +72,14 @@ public class ScheduleListScreen extends AppCompatActivity {
 
                                if(homeHandler.deleteSchedule(scheduleBean.scheduleID))
                                {
+
+                                   scheduleBeanList = homeHandler.getscheduleList();
+                                   scheduleListAdapter = new ScheduleListAdapter(scheduleBeanList,ScheduleListScreen.this);
+                                   scheduleList.setAdapter(scheduleListAdapter);
                                    Toast.makeText(ScheduleListScreen.this, "Schedule deleted",
                                            Toast.LENGTH_LONG).show();
+
+
                                }else {
                                    Toast.makeText(ScheduleListScreen.this, "could not delete schedule, already appointment taken",
                                            Toast.LENGTH_LONG).show();
@@ -117,7 +124,7 @@ public class ScheduleListScreen extends AppCompatActivity {
         super.onResume();
         HomeHandler homeHandler = new HomeHandler();
 
-        ScheduleListAdapter scheduleListAdapter = null;
+
         try {
 
             scheduleBeanList = homeHandler.getscheduleList();

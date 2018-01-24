@@ -358,9 +358,34 @@ String[] where = {appointmentID,scheduleID,appointmentDate};
 
            String[] where ={scheduleID};
 
-           deletet=  DBConnection.deleteSKURecord("schedule","schedule_id", where);
+           deletet=  DBConnection.deleteSKURecord("schedule","schedule_id = ?", where);
           if(deletet)
-           deletet=  DBConnection.deleteSKURecord("schedule_day","schedule_id", where);
+           deletet=  DBConnection.deleteSKURecord("schedule_day","schedule_id = ?", where);
+
+         //  deletet = true;
+
+       }
+
+
+
+        return deletet;
+
+
+    }
+
+
+    public boolean deleteScheduleDay(String scheduleID) throws Exception{
+
+
+                        int count =  getAppoinmentCount(scheduleID);
+
+        boolean deletet = false;
+       if(count<1){
+
+
+           String[] where ={scheduleID};
+
+           deletet=  DBConnection.deleteSKURecord("schedule_day","schedule_id = ?", where);
 
          //  deletet = true;
 
