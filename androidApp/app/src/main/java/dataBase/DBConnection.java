@@ -18,6 +18,7 @@ public class DBConnection {
 		   database = DataBaseClass.getDatabase();
 
 		}catch(Exception e)
+
 		{
 			return "Error:\n"+e.toString();
 		}
@@ -54,7 +55,6 @@ public class DBConnection {
 			return  database.rawQuery(query,where);
 		//}catch(Exception e){return null;}
 	}
-
 
 	public static boolean insertRow(String table, ContentValues values)
 	{

@@ -135,8 +135,14 @@ saveBtn = (Button)findViewById(R.id.saveBtn);
         });
 
 
+       String[] newDate =  scheBean.getCurrentDate().split("-");
+        String date = scheBean.getCurrentDate();
+        if(newDate.length > 0){
+            date = newDate[2] + "-"+newDate[1]+"-"+newDate[0];
 
-        dateText.setText(scheBean.getCurrentDate());
+
+        }
+        dateText.setText(date);
 
         for (int position = 0; position < scheduleBeen.size(); position++) {
             if (scheBean.getScheduleID().equals(scheduleBeen.get(position).scheduleID))
@@ -170,7 +176,16 @@ saveBtn = (Button)findViewById(R.id.saveBtn);
 
                     appointmentCv.put("appointment_id",appointmentId);
                     appointmentCv.put("schedule_id",scheduleBeen.get(spinner.getSelectedItemPosition()).getScheduleID());
-                    appointmentCv.put("appointment_date",dateText.getText().toString());
+
+                    String[] newDate = dateText.getText().toString().split("-");
+                    String date = dateText.getText().toString();
+                    if(newDate.length > 0){
+                        date =  newDate[2]+"-"+newDate[1]+"-"+newDate[0];
+
+                    }
+
+                    appointmentCv.put("appointment_date",date);
+
                     PatientBean selectedPatient = ((DepartmentArrayAdapter)patientName.getAdapter()).getSelectedPatient();
                     appointmentCv.put("client_id",selectedPatient.getPatientID());
                     appointmentCv.put("status","pending");

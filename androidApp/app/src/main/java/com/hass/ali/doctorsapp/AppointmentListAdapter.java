@@ -181,7 +181,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
      String reorderDate = null;
      String DateTime;
 
-     DateFormat dateFormat = new SimpleDateFormat("dd--MM-yyyy HH:mm:ss");
+     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
      Calendar cal = Calendar.getInstance();
 
      DateTime = dateFormat.format(cal.getTime());

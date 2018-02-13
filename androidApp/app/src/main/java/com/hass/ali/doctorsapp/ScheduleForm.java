@@ -91,10 +91,34 @@ public class ScheduleForm extends AppCompatActivity {
            Schedule_ID = scheBean.getScheduleID();
            name.setText(scheBean.getScheduleName());
            capacityET.setText(scheBean.getCapacity());
-           dateFrom.setText(scheBean.getScheduledateFrom());
-           dateTo.setText(scheBean.getScheduledateto());
+
            timeFrom.setText(scheBean.getScheduleTimeFrom());
            timeTo.setText(scheBean.getScheduleTimeTo());
+
+
+        //   dateFrom.setText(scheBean.getScheduledateFrom());
+        //   dateTo.setText(scheBean.getScheduledateto());
+
+
+           String[] datedTo = scheBean.getScheduledateto().split("-");
+
+
+           dateTo.setText((datedTo.length > 0) ?  datedTo[2] +"-" +datedTo[1]+"-" +datedTo[0] : scheBean.getScheduledateto());
+
+
+
+
+           String[] datedFrom = scheBean.getScheduledateFrom().split("-");
+
+
+           dateFrom.setText((datedFrom.length > 0) ?  datedFrom[2] +"-" +datedFrom[1]+"-" +datedFrom[0] : scheBean.getScheduledateto());
+
+
+
+
+
+
+
 
            for(int a = 0;a<scheBean.getDays().size();a++){
 
@@ -125,11 +149,28 @@ public class ScheduleForm extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+
+
                 // Get Current Date
                 Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                try{
+
+                    String[] setedDate = dateFrom.getText().toString().split("-");
+
+                    mYear = Integer.parseInt(setedDate[2]);
+                    mMonth = Integer.parseInt(setedDate[1])-1;
+                    mDay = Integer.parseInt(setedDate[0]);
+
+                }catch (Exception e){
+
+                }
+
+
 
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(ScheduleForm.this,
@@ -159,6 +200,20 @@ public class ScheduleForm extends AppCompatActivity {
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+
+                try{
+
+                    String[] setedDate = dateTo.getText().toString().split("-");
+
+                    mYear = Integer.parseInt(setedDate[2]);
+                    mMonth = Integer.parseInt(setedDate[1])-1;
+                    mDay = Integer.parseInt(setedDate[0]);
+
+                }catch (Exception e){
+
+                }
 
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(ScheduleForm.this,
@@ -233,10 +288,24 @@ public class ScheduleForm extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String str_timeTo = timeTo.getText().toString();
-                String  str_timeFrom = timeFrom.getText().toString();
+
+                String[] datedTo =  dateTo.getText().toString().split("-");
+                String[] datedFrom =  dateFrom.getText().toString().split("-");
+
                 String str_dateTO = dateTo.getText().toString();
                 String str_dateFrom = dateFrom.getText().toString();
+                if(datedTo.length> 0){
+
+                    str_dateTO = datedTo[2] +"-" +datedTo[1]+"-" +datedTo[0];
+                }
+                if(datedFrom.length> 0){
+
+                    str_dateFrom = datedFrom[2] +"-" +datedFrom[1]+"-" +datedFrom[0];
+                }
+
+                String str_timeTo = timeTo.getText().toString();
+                String  str_timeFrom = timeFrom.getText().toString();
+
 
 
                 if(str_timeTo == "" || str_timeFrom == "" || str_dateTO == "" || str_dateFrom == "" ){
@@ -256,7 +325,7 @@ public class ScheduleForm extends AppCompatActivity {
                     }
 
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
                     Date dateTO = sdf.parse(str_dateTO);
@@ -353,11 +422,24 @@ public class ScheduleForm extends AppCompatActivity {
             public void onClick(View view) {
 
 
+                String[] datedTo =  dateTo.getText().toString().split("-");
+                String[] datedFrom =  dateFrom.getText().toString().split("-");
+
+                String str_dateTO = dateTo.getText().toString();
+                String str_dateFrom = dateFrom.getText().toString();
+                if(datedTo.length> 0){
+
+                    str_dateTO = datedTo[2] +"-" +datedTo[1]+"-" +datedTo[0];
+                }
+                if(datedFrom.length> 0){
+
+                    str_dateFrom = datedFrom[2] +"-" +datedFrom[1]+"-" +datedFrom[0];
+                }
 
                 String str_timeTo = timeTo.getText().toString();
               String  str_timeFrom = timeFrom.getText().toString();
-              String str_dateTO = dateTo.getText().toString();
-              String str_dateFrom = dateFrom.getText().toString();
+
+
 
 
                 if(str_timeTo == "" || str_timeFrom == "" || str_dateTO == "" || str_dateFrom == "" ){
@@ -377,7 +459,7 @@ public class ScheduleForm extends AppCompatActivity {
                     }
 
 
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
                     Date dateTO = sdf.parse(str_dateTO);

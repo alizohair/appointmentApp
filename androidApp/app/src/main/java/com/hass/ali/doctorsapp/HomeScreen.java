@@ -214,6 +214,11 @@ if(id == R.id.nav_profile){
 
         String daYid = dayToIDmap(dateArray[0]).toString();
         String Str_date = dateArray[1];
+        String[] newDate =  Str_date.split("-");
+        if(newDate.length > 0 ){
+            Str_date = newDate[2] + "-"+newDate[1] + "-"+newDate[0];
+
+        }
         HomeHandler homeHandler = new HomeHandler();
         scheduleBeen =  homeHandler.getDayscheduleList(Str_date,daYid);
         scheduledateListAdapter =  new ScheduledateListAdapter(scheduleBeen,HomeScreen.this);

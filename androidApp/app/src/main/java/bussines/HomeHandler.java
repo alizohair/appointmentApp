@@ -80,8 +80,8 @@ public class HomeHandler {
                 "where appointment_date = '"+Str_date+"' " +
                 "group by schedule_id" +
                 ") a on s.schedule_id = a.schedule_id " +
-               // "WHERE '"+Str_date+"' between s.end_date and s.start_date " +
-                " WHERE sd.day_id = '"+day+"';";
+                "WHERE '"+Str_date+"' between s.start_date and s.end_date and " +
+                "  sd.day_id = '"+day+"';";
         String[] strings = {Str_date,Str_date,day};
         Cursor cursor =  DBConnection.rawQuery(selectQuery, null);
         // Cursor cursor = db.rawQuery(selectQuery, null);

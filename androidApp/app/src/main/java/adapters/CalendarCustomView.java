@@ -122,8 +122,10 @@ public class CalendarCustomView extends LinearLayout {
         int currentMonth = cal.get(Calendar.MONTH) + 1;
         int currentYear = cal.get(Calendar.YEAR);
 
-        String dateFrom = "01-"+currentMonth+"-"+currentYear;
-        String dateTo = "31-"+currentMonth+"-"+currentYear;
+
+        String dateFrom = currentYear+"-"+currentMonth+"-01";
+        String dateTo = currentYear+"-"+currentMonth+"-31";
+
         HomeHandler homeHandler = new HomeHandler();
         HashMap<String, Boolean> dateScapacity = null;
         try {
