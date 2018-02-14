@@ -1,14 +1,12 @@
 package bussines;
 
-import android.view.View;
-
 /**
  * Created by Hp on 10/22/2017.
  */
 
 public interface CustomItemClickListener {
+    void onItemMove(int fromPosition, int toPosition);
 
-    public void onItemClick(View v, int position);
-
+    void onItemDismiss(int position);
 
 }

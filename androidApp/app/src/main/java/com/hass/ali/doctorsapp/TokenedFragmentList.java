@@ -78,9 +78,10 @@ public class TokenedFragmentList extends Fragment {
 
     private static void setUpItemTouchHelper(final RecyclerView mRecyclerView) {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
-
+            AppointmentListAdapter adapter = (AppointmentListAdapter)mRecyclerView.getAdapter();
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                adapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 return true;
             }
 
@@ -102,7 +103,7 @@ public class TokenedFragmentList extends Fragment {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
 
-                AppointmentListAdapter adapter = (AppointmentListAdapter)mRecyclerView.getAdapter();
+
                 if(swipeDir == 16){
 
                     try {

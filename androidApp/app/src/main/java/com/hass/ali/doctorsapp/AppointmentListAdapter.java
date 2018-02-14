@@ -14,12 +14,13 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import bussines.CustomItemClickListener;
 import bussines.HomeHandler;
 
-public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentListAdapter.MyViewHolder> {
+public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentListAdapter.MyViewHolder> implements CustomItemClickListener{
 
     private List<appointmentBean> appointmentBeanList;
     private Context ctx;
@@ -27,6 +28,45 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     public AppointmentListAdapter(List<appointmentBean> activityBeanList, Context ctx) {
         this.appointmentBeanList = activityBeanList;
        this.ctx=ctx;
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+      String newToken ;
+
+        if(toPosition == appointmentBeanList.size()-1){
+            int lastToken = (int)(Double.parseDouble(appointmentBeanList.get(toPosition).getToken_no())) +1;
+            newToken = String.valueOf(lastToken);
+        }
+        else if(toPosition==0){
+
+
+            newToken = String.valueOf((Double.parseDouble(appointmentBeanList.get(fromPosition).getToken_no()) + 0 )/2);
+
+        }else {
+            newToken = String.valueOf(((Double.parseDouble(appointmentBeanList.get(fromPosition).getToken_no()) +Double.parseDouble(appointmentBeanList.get(toPosition).getToken_no()) )/2));
+        }
+
+
+        appointmentBeanList.get(fromPosition);
+        final HomeHandler homeHandler = new HomeHandler();
+
+        try {
+            homeHandler.changeStatus( appointmentBeanList.get(fromPosition).appointment_date,String.valueOf( appointmentBeanList.get(fromPosition).appointment_id),String.valueOf( appointmentBeanList.get(fromPosition).schedule_id), appointmentBeanList.get(fromPosition).status,newToken,null,null,null);
+
+            refreshList(String.valueOf(appointmentBeanList.get(fromPosition).schedule_id),appointmentBeanList.get(fromPosition).appointment_date,appointmentBeanList.get(fromPosition).status);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+      //  notifyItemMoved(fromPosition, toPosition);
+
+
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        Toast.makeText(ctx, ""+ position, Toast.LENGTH_SHORT).show();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
