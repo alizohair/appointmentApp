@@ -42,6 +42,7 @@ public class NewAppoint extends AppCompatActivity {
     ArrayList<PatientBean> patientBeen;
     Spinner spinner;
     Button saveBtn;
+    String NewpatienId;
     HomeHandler homeHandler;
     private int mYear, mMonth, mDay, mHour, mMinute;
     @Override
@@ -216,10 +217,30 @@ saveBtn = (Button)findViewById(R.id.saveBtn);
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_GET_MAP_LOCATION && resultCode == Activity.RESULT_OK) {
-            String patienId = data.getStringExtra("patienId");
+
+            NewpatienId = data.getStringExtra("patienId");
+            try {
+                patientBeen =  homeHandler.getPatient();
+
+
+            DepartmentArrayAdapter   mDepartmentArrayAdapter = new DepartmentArrayAdapter(NewAppoint.this, R.layout.simple_text_view, patientBeen);
+            patientName.setAdapter(mDepartmentArrayAdapter);
+
+                for (int position = 0; position < patientBeen.size(); position++) {
+                    if (patientBeen.get(position).getPatientID().equals(NewpatienId))
+                        ((DepartmentArrayAdapter)patientName.getAdapter()).setSelectedPatient(patientBeen.get(position));
+                }
+
+
+
+
             String name = data.getStringExtra("name");
             patientName.setText(name);
 
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -235,7 +256,10 @@ saveBtn = (Button)findViewById(R.id.saveBtn);
 
             DepartmentArrayAdapter   mDepartmentArrayAdapter = new DepartmentArrayAdapter(NewAppoint.this, R.layout.simple_text_view, patientBeen);
             patientName.setAdapter(mDepartmentArrayAdapter);
-
+            for (int position = 0; position < patientBeen.size(); position++) {
+                if (patientBeen.get(position).getPatientID().equals(NewpatienId))
+                    ((DepartmentArrayAdapter)patientName.getAdapter()).setSelectedPatient(patientBeen.get(position));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

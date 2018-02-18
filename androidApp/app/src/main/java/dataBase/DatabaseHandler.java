@@ -103,7 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.execSQL(createDoctor_clinic);
 
 
-        database.execSQL(patinet);
+       /* database.execSQL(patinet);
         database.execSQL(patinet1);
         database.execSQL(patinet2);
 
@@ -122,7 +122,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.execSQL(day5);
         database.execSQL(da6);
         database.execSQL(day7);
-        database.execSQL(day8);
+        database.execSQL(day8);*/
 
 
 

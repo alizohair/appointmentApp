@@ -180,7 +180,8 @@ public class ScheduleForm extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                dateFrom.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                String month = String.valueOf(monthOfYear + 1).length() == 1 ? "0"+(monthOfYear + 1) :String.valueOf(monthOfYear + 1);
+                                dateFrom.setText(dayOfMonth + "-" +month + "-" + year);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -222,8 +223,8 @@ public class ScheduleForm extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-
-                                dateTo.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+String month = String.valueOf(monthOfYear + 1).length() == 1 ? "0"+(monthOfYear + 1) :String.valueOf(monthOfYear + 1);
+                                dateTo.setText(dayOfMonth + "-" + month+ "-" + year);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -668,7 +669,7 @@ public class ScheduleForm extends AppCompatActivity {
        // DBConnection.insertRow("schedule", scheduleCV);
 
       homeHandler.deleteScheduleDay(Schedule_ID);
-      String[] where ={scheduleID};
+      String[] where ={Schedule_ID};
         DBConnection.updateRecord("schedule", scheduleCV,"schedule_id = ?", where);
 
 
